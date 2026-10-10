@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  
+  <link rel="icon" href="images/mark.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;700;800&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+
+  <!-- LOGO WALL: one rounded white card; compact wrapping rows and balanced logo widths.
+       Adjust slot widths, gap and --logo-height below to change density.
+       Shared styles.css remains unchanged. -->
+  <style>
+    /* Compact logo sheet: wrapping rows rather than oversized grid spans.
+       Adjust --logo-height for all logos; set height on a specific image to fine-tune it. */
+    #client-logo-wall {
+      --logo-height: 100px;
+      display:flex; flex-wrap:wrap; align-items:center; justify-content:center;
+      gap:18px 16px; padding:26px 22px;
+      background:#fff; border-radius:20px; overflow:hidden;
+      box-shadow:0 10px 30px rgba(26,26,26,.05);
+    }
+    #client-logo-wall .client-logo {
+      flex:0 0 110px; width:110px; height:110px;
+      min-width:0; padding:0; display:flex; align-items:center; justify-content:center;
+      background:transparent; border-radius:0;
+    }
+    #client-logo-wall .client-logo-wide { flex-basis:180px; width:180px; }
+    #client-logo-wall img { display:block; width:100%; height:var(--logo-height); object-fit:contain; }
+    /* Example individual adjustment:
+       #client-logo-wall img[src$="/blue-d-mark.jpg"] { height:80px; }
+    */
+    .qcard .q-mark { width:130px; height:72px; max-width:100%; object-fit:contain; border-radius:0; background:#fff; margin-bottom:18px; }
+    .quote-grid .qcard .q-mark { width:180px; height:90px; }
+    @media(max-width:550px) {
+      #client-logo-wall { gap:10px 8px; padding:18px 12px; --logo-height:85px; }
+      #client-logo-wall .client-logo { flex-basis:90px; width:90px; height:95px; }
+      #client-logo-wall .client-logo-wide { flex-basis:150px; width:150px; }
+    }
+    /* Scroll reveal: edit duration and travel here. Runs once per logo. */
+    #client-logo-wall .client-logo.logo-reveal-ready {
+      opacity:0; transform:translateY(16px) scale(.96);
+      transition:opacity .55s ease, transform .65s cubic-bezier(.2,.7,.2,1);
+      transition-delay:var(--logo-delay,0ms);
+    }
+    #client-logo-wall .client-logo.logo-reveal-ready.is-revealed {
+      opacity:1; transform:none;
+    }
+    @media(prefers-reduced-motion:reduce) {
+      #client-logo-wall .client-logo.logo-reveal-ready {
+        opacity:1; transform:none; transition:none;
+      }
+    }
+
+    /* QUOTE LAYOUT: Mike is full width; next three cards scroll horizontally.
+       --short-card controls card width; taller cards give full quotes more room. Only .quote-body scrolls vertically. */
+    .testimonial-rail { display:flex; align-items:flex-start; gap:16px; overflow-x:auto; padding:2px 0 14px; scroll-snap-type:x proximity; scrollbar-width:none; }
+    .testimonial-rail::-webkit-scrollbar { display:none; }
+    .testimonial-rail .qcard { flex-shrink:0; min-width:0; box-sizing:border-box; display:flex; flex-direction:column; scroll-snap-align:start; }
+    .featured-quotes .qcard { flex-basis:calc((100% - 16px)/2); height:360px; }
+    .short-quotes { --short-card:calc((100% - 48px)/4); }
+    .short-quotes .qcard { flex-basis:var(--short-card); width:var(--short-card); height:460px; aspect-ratio:auto; }
+    .testimonial-rail .q-mark { flex-shrink:0; height:52px; width:130px; margin-bottom:12px; }
+    .quote-body p:last-child { margin-bottom:0; }
+    .quote-body { flex:1; min-height:0; overflow-y:auto; padding-right:10px; scrollbar-width:thin; scrollbar-color:#7a765a #f6f3ec; }
+    .testimonial-rail cite { flex-shrink:0; margin-top:12px; }
+    .testimonial-nav { display:flex; justify-content:flex-end; align-items:center; gap:8px; margin-bottom:12px; }
+    .testimonial-nav span { margin-right:auto; font-size:12px; color:#7a765a; }
+    .testimonial-nav button:disabled { opacity:.3; cursor:default; }
+    .quote-body:focus-visible,.testimonial-rail:focus-visible { outline:2px solid #7a765a; outline-offset:3px; }
+    @media(max-width:1000px) { .short-quotes { --short-card:calc((100% - 32px)/3); } }
+    @media(max-width:760px) { .short-quotes { --short-card:calc((100% - 16px)/2); } .featured-quotes .qcard { flex-basis:85%; } }
+    @media(max-width:550px) { .short-quotes { --short-card:85%; } .featured-quotes .qcard { height:420px; } }
+  </style>
+
+<!-- SEO / SOCIAL METADATA: unique to this page. Deployment assumes www.commonground.cc
+     and the supplied .html navigation. Update canonical, og:url and JSON-LD URLs together
+     if hosting uses extensionless routes. Social image uses an existing site asset;
+     keep its path and filename case exact. No special GEO/AI metatag is required. -->
+<title>Clients &amp; Testimonials | Commonground Melbourne</title>
+<meta name="description" content="Hear from healthcare, education, business and not-for-profit clients about Commonground’s video production, photography, brand and communications work."/>
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"/>
+<meta name="author" content="Commonground Communication"/>
+<link rel="canonical" href="https://www.commonground.cc/clients.html"/>
+<meta property="og:type" content="website"/>
+<meta property="og:locale" content="en_AU"/>
+<meta property="og:site_name" content="Commonground Communication"/>
+<meta property="og:title" content="Clients &amp; Testimonials | Commonground Melbourne"/>
+<meta property="og:description" content="Hear from healthcare, education, business and not-for-profit clients about Commonground’s video production, photography, brand and communications work."/>
+<meta property="og:url" content="https://www.commonground.cc/clients.html"/>
+<meta property="og:image" content="https://www.commonground.cc/images/home/BTS2.jpg"/>
+<meta property="og:image:alt" content="Commonground creative production for organisations"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="Clients &amp; Testimonials | Commonground Melbourne"/>
+<meta name="twitter:description" content="Hear from healthcare, education, business and not-for-profit clients about Commonground’s video production, photography, brand and communications work."/>
+<meta name="twitter:image" content="https://www.commonground.cc/images/home/BTS2.jpg"/>
+<meta name="twitter:image:alt" content="Commonground creative production for organisations"/>
+<!-- STRUCTURED DATA: grounded business and service facts; keep consistent across pages.
+     No invented street address, opening hours, ratings, awards or video upload dates. -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organisation",
+      "@id": "https://www.commonground.cc/#organisation",
+      "name": "Commonground Communication",
+      "alternateName": "Commonground",
+      "url": "https://www.commonground.cc/",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://www.commonground.cc/images/home/logo.png"
+      },
+      "description": "Melbourne creative agency delivering video production, photography, brand strategy and communication campaigns for businesses, healthcare, education and not-for-profit organisations.",
+      "telephone": "+61-3-9088-7586",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Melbourne",
+        "addressRegion": "VIC",
+        "addressCountry": "AU"
+      },
+      "areaServed": [
+        {
+          "@type": "City",
+          "name": "Melbourne"
+        },
+        {
+          "@type": "Country",
+          "name": "Australia"
+        }
+      ],
+      "knowsAbout": [
+        "Video production",
+        "Photography",
+        "Brand strategy and design",
+        "Communication and campaign strategy"
+      ]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://www.commonground.cc/#website",
+      "url": "https://www.commonground.cc/",
+      "name": "Commonground Communication",
+      "alternateName": "Commonground",
+      "publisher": {
+        "@id": "https://www.commonground.cc/#organisation"
+      },
+      "inLanguage": "en-AU"
+    },
+    {
+      "@type": "CollectionPage",
+      "@id": "https://www.commonground.cc/clients.html#webpage",
+      "url": "https://www.commonground.cc/clients.html",
+      "name": "Clients & Testimonials | Commonground Melbourne",
+      "description": "Hear from healthcare, education, business and not-for-profit clients about Commonground’s video production, photography, brand and communications work.",
+      "inLanguage": "en-AU",
+      "isPartOf": {
+        "@id": "https://www.commonground.cc/#website"
+      },
+      "publisher": {
+        "@id": "https://www.commonground.cc/#organisation"
+      },
+      "about": {
+        "@id": "https://www.commonground.cc/#organisation"
+      },
+      "primaryImageOfPage": {
+        "@type": "ImageObject",
+        "url": "https://www.commonground.cc/images/home/BTS2.jpg",
+        "caption": "Commonground creative production for organisations"
+      }
+    }
+  ]
+}
+</script>
+</head>
+<body>
+  <!-- EDITING GUIDE
+       CLIENTS: edit featured testimonials and qcard testimonials directly below. Copy a complete qcard inside t-row to add a testimonial; keep quote text and attribution together. The logo wall list is in the page-local script at the bottom. Files use images/clients/name.jpg. Keep testimonial slider IDs unchanged.
+       Shared appearance: styles.css. Shared interactions and image lists: script.js.
+       Images are relative paths such as images/project.jpg; keep your images folder.
+       Text between tags is visible copy; comments like this are invisible editing notes.
+       Escape ampersands as &amp; in HTML text and attribute values.
+  -->
+
+  <!-- ===== PAGE HEADER ===== -->
+  <!-- SHARED HEADER: edit navigation text and href destinations here.
+       Navigation is repeated across all seven HTML pages: apply shared changes to each.
+       Logo: change images/logo.png and its alt text; favicon is images/mark.png in head.
+       menu-btn and nav classes are used by the shared mobile menu script. -->
+  <header class="page-head">
+    <div class="wrap bar">
+      <a class="logo" href="index.html"><img src="images/home/logo.png" alt="Commonground"></a>
+      <button class="menu-btn" aria-label="Menu"><span></span></button>
+      <nav class="nav">
+        <a href="video.html">Video</a>
+        <a href="photography.html">Photography</a>
+        <a href="brand.html">Brand</a>
+        <a href="clients.html" class="is-on">Clients</a>
+        <a href="about.html">About</a>
+        <a class="pill" href="contact.html">Get in Touch</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="page-hero" style="background-image:url('images/home/desktop-notes.jpg')">
+    <div class="wrap"><p class="mark" style="color:#cecaaf">/ Clients</p><h1>Proof is a conversation, not a claim.</h1></div>
+  </section>
+
+<!-- FEATURED: Mike spans the full width (two normal featured cards).
+     Edit quote paragraphs and attribution directly; this card grows with its copy. -->
+<section class="section" style="padding-bottom:20px"><div class="wrap"><p class="mark">/ 01 · In their words</p><div class="quote-featured"><article class="qcard">
+<!-- IMAGE: edit src for the file path and alt for its description; preserve layout classes. -->
+<img alt="Northern Health" class="q-mark" loading="lazy" src="images/clients/northern-health.jpg"/>
+<p>It is with genuine respect that I acknowledge the exceptional quality and thoughtful execution demonstrated by Commonground in this production. The brief for this project was both ambitious and sensitive: to create a 10–12-minute video that would be informative, engaging, and welcoming, serving as a meaningful resource for patients navigating cancer care. Commonground not only met this objective but exceeded expectations in several key areas.</p>
+<p>What stood out most was the attention to detail and the deliberate investment in crafting a tone that was both warm and reassuring, critical for engaging patients on such a sensitive subject. Commonground has demonstrated a deep understanding of both the emotional and informational needs of the intended audience. Their ability to translate complex medical information into a compassionate and engaging visual narrative is commendable.</p><p>I recommend Christoph and Commonground for future projects, particularly those requiring sensitivity, professionalism, and high production standards.</p><cite>Mike Masilamani, Northern Health</cite>
+</article></div></div></section>
+<section class="section" style="padding-top:0;padding-bottom:20px"><div class="wrap"><!-- SCROLLER: copy a complete article to add a quote. Full copy stays in .quote-body;
+     the logo and attribution stay outside it so they remain visible. -->
+<div class="quote-nav testimonial-nav"><span>Swipe or scroll to explore</span><button type="button" data-rail="featured-quotes" data-direction="-1" aria-label="Previous Featured testimonials">‹</button><button type="button" data-rail="featured-quotes" data-direction="1" aria-label="Next Featured testimonials">›</button></div>
+<div class="testimonial-rail featured-quotes" id="featured-quotes" role="region" aria-label="Featured testimonials" tabindex="0"><article class="qcard">
+<!-- IMAGE: edit src for the file path and alt for its description; preserve layout classes. -->
+<img alt="AIFC" class="q-mark" loading="lazy" src="images/clients/aifc.jpg"/><div aria-label="Full testimonial from Nicholas Marks" class="quote-body" role="region" tabindex="0"><p>The team at Commonground worked closely with us to build relationship, understand why we exist, our purpose and vision. This informed the creative process and the development of our brand identity in the formation of a new charity. The work was professional and of a very high standard and I have no hesitation in recommending Commonground Communication.</p></div>
+
+<cite>Nicholas Marks, CEO, AIFC</cite>
+</article><article class="qcard"><img alt="The Royal Melbourne Hospital" class="q-mark" loading="lazy" src="images/clients/royal-melbourne-hospital.jpg"/><div aria-label="Full testimonial from Travis Hall" class="quote-body" role="region" tabindex="0"><p>We contracted Commonground to develop our Surgery School videos for patients to view in preparation for their surgery. We had complex arrangements working with 7 separate hospitals and multiple different teams to develop 24 videos in total. Christoph was extremely thorough and generous with his creative direction throughout the whole process. Commonground took the time to truly understand our vision and requirements.</p></div><cite>Travis Hall, West Metro HSP</cite></article><article class="qcard">
+<!-- IMAGE: edit src for the file path and alt for its description; preserve layout classes. -->
+<img alt="Deakin University" class="q-mark" loading="lazy" src="images/clients/deakin-university.jpg"/><div aria-label="Full testimonial from Dr Adrian Cameron" class="quote-body" role="region" tabindex="0"><p>Commonground worked with us on a major supermarket intervention campaign. The retailers, customers and partners had only praise for the work. Based on this work Deakin University won the prestigious Konrad Jamrozik Award for Health Advocacy and the VicHealth Healthy Eating Award for best health promotion project in Victoria, Australia.</p></div>
+
+<cite>Dr Adrian Cameron, Deakin University</cite>
+</article></div></div></section>
+<section class="section" style="padding-top:0"><div class="wrap"><!-- SCROLLER: copy a complete article to add a quote. Full copy stays in .quote-body;
+     the logo and attribution stay outside it so they remain visible. -->
+<div class="quote-nav testimonial-nav"><span>Swipe or scroll to explore</span><button type="button" data-rail="short-quotes" data-direction="-1" aria-label="Previous More testimonials">‹</button><button type="button" data-rail="short-quotes" data-direction="1" aria-label="Next More testimonials">›</button></div>
+<div class="testimonial-rail short-quotes" id="short-quotes" role="region" aria-label="More testimonials" tabindex="0"><article class="qcard"><img alt="Kids Hope Australia" class="q-mark" loading="lazy" src="images/clients/kids-hope-australia.jpg"/><div aria-label="Full testimonial from Gail Cameron" class="quote-body" role="region" tabindex="0"><p>Commonground developed and updated the Kids Hope brand, design, and positioning. They also did an impressive job setting the direction for our communications. The feedback from the team was very positive and everyone found them fantastic to work with.</p></div><cite>Gail Cameron, Kids Hope</cite></article><article class="qcard"><img alt="Thankyou" class="q-mark" loading="lazy" src="images/clients/thankyou.jpg"/><div aria-label="Full testimonial from Daniel Flynn" class="quote-body" role="region" tabindex="0"><p>Christoph has a very creative mind and focus. He looks to the core of an idea and keeps challenging the creative until it truly represents that idea.</p></div><cite>Daniel Flynn, Thankyou</cite></article><article class="qcard"><img alt="CBM Australia" class="q-mark" loading="lazy" src="images/clients/cbm.jpg"/><div aria-label="Full testimonial from Heath McSolvin" class="quote-body" role="region" tabindex="0"><p>Christoph is insightful, intelligent and able to achieve great things. He was pivotal in developing, creating, and growing the End the Cycle brand. His vision and creativity brought this program to life.</p></div><cite>Heath McSolvin, CBM Australia</cite></article><article class="qcard"><img alt="Heartburst" class="q-mark" loading="lazy" src="images/clients/heartburst.jpg"/><div aria-label="Full testimonial from Nick Dube" class="quote-body" role="region" tabindex="0"><p>It was great working with Commonground. The shoot was professional and well run. Great creative input from Christoph and excellent talent too! Appreciated the flexibility to share the load with post production work too!</p></div><cite>Nick Dube, Heartburst</cite></article><article class="qcard"><img alt="Interserve" class="q-mark" loading="lazy" src="images/clients/interserve.jpg"/><div aria-label="Full testimonial from Cathy Hine" class="quote-body" role="region" tabindex="0"><p>We had the pleasure of working with Christoph in video and photography. He captured our activities, energy and spirit and produced a video which distilled and clearly presented a fairly nuanced message.</p></div><cite>Cathy Hine, Interserve</cite></article><article class="qcard"><img alt="R2L / GDU" class="q-mark" loading="lazy" src="images/clients/glow.jpg"/><div aria-label="Full testimonial from Greg Low" class="quote-body" role="region" tabindex="0"><p>Christoph has enormous experience in purposeful storytelling. I have worked with Christoph in many countries. Respectfully and ethically telling their story is central to the way Christoph works.</p></div><cite>Greg Low, R2L / GDU</cite></article><article class="qcard"><img alt="Global Interaction" class="q-mark" loading="lazy" src="images/clients/global-interaction.jpg"/><div aria-label="Full testimonial from Andrea Fleming" class="quote-body" role="region" tabindex="0"><p>Commonground produced stories from the work of Global Interaction of lives being transformed. Christoph beautifully and genuinely conveyed the impact of Global Interaction’s work. We value authentic trust relationships, a quality that is mutually identified in working alongside Christoph.</p></div><cite>Andrea Fleming, Global Interaction</cite></article><article class="qcard"><img alt="YourGrocer" class="q-mark" loading="lazy" src="images/clients/your-grocer.jpeg"/><div aria-label="Full testimonial from Morgan Ranieri" class="quote-body" role="region" tabindex="0"><p>Christoph helped me to clearly articulate YourGrocer's "Why" and convinced me to put more of an intentional focus on it. Christoph really lit a fire and helped me see the value of focussing on our story.</p></div><cite>Morgan Ranieri, YourGrocer</cite></article><article class="qcard"><img alt="Interserve" class="q-mark" loading="lazy" src="images/clients/interserve.jpg"/><div aria-label="Full testimonial from Esther Adams" class="quote-body" role="region" tabindex="0"><p>Christoph has extensive video, branding, campaigning and marketing knowledge, experience and insight which he applies with great sensitivity.</p></div><cite>Esther Adams, Interserve</cite></article><article class="qcard"><img alt="John Sikkema" class="q-mark" loading="lazy" src="images/clients/john-sikkema.jpg"/><div aria-label="Full testimonial from John Sikkema" class="quote-body" role="region" tabindex="0"><p>I have had Commonground do three different projects for my business, each time they delivered a quality product with minimal briefs. Commonground have a unique gift and skill to deliver high quality end results - on one important project people raved about his advice and the brilliant quality!</p></div><cite>John Sikkema, Business On Purpose</cite></article></div></div></section>
+
+  <!-- LOGO WALL: edit the clientLogos array below to add/remove logos.
+       Use the exact JPG basename from images/clients. wide:true gives a horizontal logo a wider slot.
+       Order is shuffled on each page load. Keep client-logo-wall ID. -->
+  <section class="section" style="padding-top:20px">
+    <div class="wrap">
+      <p class="mark">/ 02 · Organisations</p>
+      <h2 style="margin-bottom:18px">Organisations we’ve worked with and for.</h2>
+      <p class="prose">Across healthcare, education, business and community, we help organisations tell the stories that matter.</p>
+      <div class="logo-wall" id="client-logo-wall" style="margin-top:22px"></div>
+    </div>
+  </section>
+
+  <!-- FOOTER: update business name, location and phone. Keep tel: href in international format.
+       Repeat shared footer changes across the other HTML pages. -->
+  <footer class="site-foot wrap">
+    <span>Commonground Communication · Melbourne</span>
+    <a href="tel:+61390887586">(03) 9088 7586</a>
+  </footer>
+  <!-- Load shared interactions last. Keep this script link and the styles.css link in head. -->
+  <script src="script.js"></script>
+
+  <!-- LOGO LIST: file is the exact basename without .jpg; name is accessible text.
+       Square JPGs are 250x250; horizontal JPGs 500x250. Artwork retains its proportions.
+       Add an entry here and the corresponding JPG to images/clients. -->
+  <script>
+  (function(){
+    var clientLogos = [
+    {
+        "file": "aifc",
+        "name": "AIFC",
+        "wide": true
+    },
+    {
+        "file": "blue-d-mark",
+        "name": "Blue D Mark",
+        "wide": false
+    },
+    {
+        "file": "cae",
+        "name": "CAE",
+        "wide": false
+    },
+    {
+        "file": "cbm",
+        "name": "CBM",
+        "wide": false
+    },
+    {
+        "file": "centre-for-humanitarian-leadership",
+        "name": "Centre For Humanitarian Leadership",
+        "wide": true
+    },
+    {
+        "file": "deakin-university",
+        "name": "Deakin University",
+        "wide": false
+    },
+    {
+        "file": "digitalteam-coach",
+        "name": "Digitalteam Coach",
+        "wide": true
+    },
+    {
+        "file": "empart",
+        "name": "Empart",
+        "wide": false
+    },
+    {
+        "file": "end-the-cycle",
+        "name": "End The Cycle",
+        "wide": true
+    },
+    {
+        "file": "geometric-monogram",
+        "name": "Geometric Monogram",
+        "wide": false
+    },
+    {
+        "file": "global-interaction",
+        "name": "Global Interaction",
+        "wide": false
+    },
+    {
+        "file": "global-leadership-summit",
+        "name": "Global Leadership Summit",
+        "wide": true
+    },
+    {
+        "file": "heartburst",
+        "name": "Heartburst",
+        "wide": true
+    },
+    {
+        "file": "heartwood-unlimited",
+        "name": "Heartwood Unlimited",
+        "wide": false
+    },
+    {
+        "file": "ibulk",
+        "name": "Ibulk",
+        "wide": true
+    },
+    {
+        "file": "incognita-enterprises",
+        "name": "Incognita Enterprises",
+        "wide": true
+    },
+    {
+        "file": "instal-life",
+        "name": "Instal Life",
+        "wide": false
+    },
+    {
+        "file": "interpack",
+        "name": "Interpack",
+        "wide": true
+    },
+    {
+        "file": "interserve",
+        "name": "Interserve",
+        "wide": false
+    },
+    {
+        "file": "john-sikkema",
+        "name": "John Sikkema",
+        "wide": true
+    },
+    {
+        "file": "kids-hope-australia",
+        "name": "Kids Hope Australia",
+        "wide": false
+    },
+    {
+        "file": "lisa-mcinnes-smith",
+        "name": "Lisa Mcinnes Smith",
+        "wide": false
+    },
+    {
+        "file": "mercy-health",
+        "name": "Mercy Health",
+        "wide": false
+    },
+    {
+        "file": "micah",
+        "name": "Micah",
+        "wide": true
+    },
+    {
+        "file": "monash-health",
+        "name": "Monash Health",
+        "wide": true
+    },
+    {
+        "file": "monash-university",
+        "name": "Monash University",
+        "wide": false
+    },
+    {
+        "file": "northern-health",
+        "name": "Northern Health",
+        "wide": true
+    },
+    {
+        "file": "peter-mac",
+        "name": "Peter Mac",
+        "wide": false
+    },
+    {
+        "file": "radial-timber",
+        "name": "Radial Timber",
+        "wide": false
+    },
+    {
+        "file": "rara-records",
+        "name": "Rara Records",
+        "wide": true
+    },
+    {
+        "file": "red-church",
+        "name": "Red Church",
+        "wide": false
+    },
+    {
+        "file": "rmit-university",
+        "name": "RMIT University",
+        "wide": true
+    },
+    {
+        "file": "royal-childrens-hospital",
+        "name": "Royal Children’s Hospital",
+        "wide": false
+    },
+    {
+        "file": "royal-melbourne-hospital",
+        "name": "Royal Melbourne Hospital",
+        "wide": true
+    },
+    {
+        "file": "royal-womens-hospital",
+        "name": "Royal Women’s Hospital",
+        "wide": true
+    },
+    {
+        "file": "shakespeare-republic",
+        "name": "Shakespeare Republic",
+        "wide": true
+    },
+    {
+        "file": "stageminded",
+        "name": "Stageminded",
+        "wide": false
+    },
+    {
+        "file": "tear-australia",
+        "name": "Tear Australia",
+        "wide": false
+    },
+    {
+        "file": "thankyou",
+        "name": "Thankyou",
+        "wide": true
+    },
+    {
+        "file": "unreached",
+        "name": "Unreached",
+        "wide": true
+    },
+    {
+        "file": "victoria-state-government",
+        "name": "Victoria State Government",
+        "wide": true
+    },
+    {
+        "file": "western-health",
+        "name": "Western Health",
+        "wide": true
+    },
+	{
+        "file": "trish-marks",
+        "name": "Trish Marks Consulting",
+        "wide": true
+    },
+	{
+        "file": "myob",
+        "name": "MYOB",
+        "wide": true
+    },
+	{
+        "file": "faith-jewels",
+        "name": "Faith Jewels",
+        "wide": true
+    },
+    {
+        "file": "world-vision",
+        "name": "World Vision",
+        "wide": true
+    }
+];
+    for(var i=clientLogos.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var temp=clientLogos[i];clientLogos[i]=clientLogos[j];clientLogos[j]=temp;}
+    var wall=document.getElementById('client-logo-wall');
+    if(!wall)return;
+    clientLogos.forEach(function(logo){
+      var cell=document.createElement('div');cell.className='client-logo'+(logo.wide?' client-logo-wide':'');
+      var img=document.createElement('img');img.src='images/clients/'+logo.file+'.jpg';img.alt=logo.name;img.loading='lazy';img.decoding='async';img.width=logo.wide?500:250;img.height=250;
+      cell.appendChild(img);wall.appendChild(cell);
+    });
+    /* Progressive enhancement: no observer or reduced motion means immediate display.
+       Observe each logo, so lower rows reveal only as they reach the viewport. */
+    var motion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    if ('IntersectionObserver' in window && !motion.matches) {
+      var cells = Array.prototype.slice.call(wall.children);
+      var observer = new IntersectionObserver(function(entries) {
+        var visible = entries.filter(function(entry) { return entry.isIntersecting; });
+        visible.sort(function(a,b) { return cells.indexOf(a.target)-cells.indexOf(b.target); });
+        visible.forEach(function(entry,index) {
+          entry.target.style.setProperty('--logo-delay', Math.min(index,6)*65+'ms');
+          entry.target.classList.add('is-revealed');
+          observer.unobserve(entry.target);
+        });
+      }, { threshold: .12 });
+      cells.forEach(function(cell) { cell.classList.add('logo-reveal-ready'); observer.observe(cell); });
+      function revealAll() {
+        if (!motion.matches) return;
+        observer.disconnect();
+        cells.forEach(function(cell) { cell.classList.add('is-revealed'); });
+      }
+      if (motion.addEventListener) motion.addEventListener('change', revealAll);
+      else if (motion.addListener) motion.addListener(revealAll);
+    }
+  })();
+  </script>
+
+  <!-- Page-local scrollers: IDs deliberately differ from the old shared four-up slider. -->
+  <script>
+  (function(){
+    var reduced=window.matchMedia('(prefers-reduced-motion: reduce)');
+    document.querySelectorAll('.testimonial-rail').forEach(function(rail){
+      /* Fit the featured row to its longest quote; fit 80% of the lower row.
+         Measure after fonts load and whenever the available width changes. */
+      var cards=Array.from(rail.querySelectorAll('.qcard'));
+      function fitCards(){
+        cards.forEach(function(card){card.style.height='auto';});
+        var heights=cards.map(function(card){return Math.ceil(card.getBoundingClientRect().height);}).sort(function(a,b){return a-b;});
+        var fraction=rail.id==='short-quotes'?.8:1;
+        var height=heights[Math.ceil(heights.length*fraction)-1]+2;
+        cards.forEach(function(card){card.style.height=height+'px';});
+        update();
+      }
+      var buttons=Array.from(document.querySelectorAll('[data-rail="'+rail.id+'"]'));
+      function update(){buttons.forEach(function(button){button.disabled=Number(button.dataset.direction)<0?rail.scrollLeft<=2:rail.scrollLeft>=rail.scrollWidth-rail.clientWidth-2;});}
+      function move(direction){var card=rail.querySelector('.qcard');rail.scrollBy({left:direction*(card.getBoundingClientRect().width+16),behavior:reduced.matches?'auto':'smooth'});}
+      buttons.forEach(function(button){button.addEventListener('click',function(){move(Number(button.dataset.direction));});});
+      rail.addEventListener('keydown',function(event){if(event.target!==rail)return;if(event.key==='ArrowLeft'||event.key==='ArrowRight'){event.preventDefault();move(event.key==='ArrowLeft'?-1:1);}});
+      rail.addEventListener('scroll',update,{passive:true});
+      var lastWidth=rail.clientWidth;
+      if('ResizeObserver' in window){
+        new ResizeObserver(function(){
+          if(rail.clientWidth!==lastWidth){lastWidth=rail.clientWidth;fitCards();}
+        }).observe(rail);
+      }else{window.addEventListener('resize',fitCards);}
+      fitCards();
+      if(document.fonts)document.fonts.ready.then(fitCards);
+    });
+  })();
+  </script>
+</body>
+</html>

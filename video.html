@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  
+  <link rel="icon" href="images/mark.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;700;800&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <!-- VIDEO STRIP OVERRIDES: scoped to this page; no shared CSS replacement needed.
+       --video-peek controls the room reserved for neighbouring thumbnails.
+       Narrow thumbnails remain clickable; touch/trackpad scrolling also works.
+       Hover previews expand without changing the player. Click selects and returns above. -->
+  <style>
+    .work-strip {
+      --video-peek: 60px;
+      position: relative; overflow-x: auto; overflow-y: hidden;
+      scrollbar-width: none; -ms-overflow-style: none;
+      scroll-snap-type: none; scroll-behavior: auto;
+      padding: 8px 0; gap: 8px; align-items: stretch;
+    }
+    .work-strip::-webkit-scrollbar { display: none; width: 0; height: 0; }
+    .work-strip .work-tile { flex: 0 0 92px; transition: flex-basis .55s cubic-bezier(.22,.61,.36,1); }
+    .work-strip .work-tile:hover { flex-basis: 92px; }
+    .work-strip .work-tile.is-on,
+    .work-strip .work-tile.is-on:hover {
+      flex-basis: min(560px, max(140px, calc(100% - 2 * var(--video-peek))));
+    }
+    .work-swipe-hint { display:flex; align-items:center; justify-content:flex-end; gap:10px; margin:18px 0 0; color:rgba(255,255,255,.7); font-size:12px; letter-spacing:.03em; }
+    .work-swipe-hint span { display:inline-flex; align-items:center; justify-content:center; width:26px; height:26px; border:1px solid rgba(255,255,255,.3); border-radius:50%; font-size:16px; }
+    /* Hover previews are independent of the clicked/playing video. */
+    @media(hover:hover) and (pointer:fine) {
+      .work-strip.has-preview .work-tile.is-on,
+      .work-strip.has-preview .work-tile.is-on:hover { flex-basis:92px; }
+      .work-strip.has-preview .work-tile.is-preview,
+      .work-strip.has-preview .work-tile.is-preview:hover {
+        flex-basis:min(560px, max(140px, calc(100% - 2 * var(--video-peek))));
+        background-size:cover; background-color:#111;
+      }
+    }
+    .work-strip .work-tile:focus-visible { outline: 2px solid #cecaaf; outline-offset: -5px; }
+    #featured-title { scroll-margin-top: 24px; }
+    #featured-title:focus { outline: none; }
+    @media(max-width:550px) {
+      .work-strip { --video-peek: 48px; }
+      .work-strip .work-tile, .work-strip .work-tile:hover { flex-basis: 72px; }
+    }
+    @media(prefers-reduced-motion:reduce) { .work-strip .work-tile { transition: none; } }
+  </style>
+
+
+<!-- SEO / SOCIAL METADATA: unique to this page. Deployment assumes www.commonground.cc
+     and the supplied .html navigation. Update canonical, og:url and JSON-LD URLs together
+     if hosting uses extensionless routes. Social image uses an existing site asset;
+     keep its path and filename case exact. No special GEO/AI metatag is required. -->
+<title>Video Production Melbourne | Brand Films &amp; Stories | Commonground</title>
+<meta name="description" content="Melbourne video production for brand films, documentaries, healthcare education, training and campaigns. From creative concept and filming to edit and delivery."/>
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"/>
+<meta name="author" content="Commonground Communication"/>
+<link rel="canonical" href="https://www.commonground.cc/video.html"/>
+<meta property="og:type" content="website"/>
+<meta property="og:locale" content="en_AU"/>
+<meta property="og:site_name" content="Commonground Communication"/>
+<meta property="og:title" content="Video Production Melbourne | Brand Films &amp; Stories | Commonground"/>
+<meta property="og:description" content="Melbourne video production for brand films, documentaries, healthcare education, training and campaigns. From creative concept and filming to edit and delivery."/>
+<meta property="og:url" content="https://www.commonground.cc/video.html"/>
+<meta property="og:image" content="https://www.commonground.cc/images/video/radial.png"/>
+<meta property="og:image:alt" content="Sustainable Australian forestry film produced by Commonground"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="Video Production Melbourne | Brand Films &amp; Stories | Commonground"/>
+<meta name="twitter:description" content="Melbourne video production for brand films, documentaries, healthcare education, training and campaigns. From creative concept and filming to edit and delivery."/>
+<meta name="twitter:image" content="https://www.commonground.cc/images/video/radial.png"/>
+<meta name="twitter:image:alt" content="Sustainable Australian forestry film produced by Commonground"/>
+<!-- STRUCTURED DATA: grounded business and service facts; keep consistent across pages.
+     No invented street address, opening hours, ratings, awards or video upload dates. -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organisation",
+      "@id": "https://www.commonground.cc/#organisation",
+      "name": "Commonground Communication",
+      "alternateName": "Commonground",
+      "url": "https://www.commonground.cc/",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://www.commonground.cc/images/home/logo.png"
+      },
+      "description": "Melbourne creative agency delivering video production, photography, brand strategy and communication campaigns for businesses, healthcare, education and not-for-profit organisations.",
+      "telephone": "+61-3-9088-7586",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Melbourne",
+        "addressRegion": "VIC",
+        "addressCountry": "AU"
+      },
+      "areaServed": [
+        {
+          "@type": "City",
+          "name": "Melbourne"
+        },
+        {
+          "@type": "Country",
+          "name": "Australia"
+        }
+      ],
+      "knowsAbout": [
+        "Video production",
+        "Photography",
+        "Brand strategy and design",
+        "Communication and campaign strategy"
+      ]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://www.commonground.cc/#website",
+      "url": "https://www.commonground.cc/",
+      "name": "Commonground Communication",
+      "alternateName": "Commonground",
+      "publisher": {
+        "@id": "https://www.commonground.cc/#organisation"
+      },
+      "inLanguage": "en-AU"
+    },
+    {
+      "@type": "Service",
+      "@id": "https://www.commonground.cc/#service-video",
+      "name": "Video production",
+      "serviceType": "Video production",
+      "description": "Brand films, documentaries, healthcare education, training and campaign videos.",
+      "provider": {
+        "@id": "https://www.commonground.cc/#organisation"
+      },
+      "areaServed": {
+        "@type": "Country",
+        "name": "Australia"
+      },
+      "url": "https://www.commonground.cc/video.html"
+    },
+    {
+      "@type": "CollectionPage",
+      "@id": "https://www.commonground.cc/video.html#webpage",
+      "url": "https://www.commonground.cc/video.html",
+      "name": "Video Production Melbourne | Brand Films & Stories | Commonground",
+      "description": "Melbourne video production for brand films, documentaries, healthcare education, training and campaigns. From creative concept and filming to edit and delivery.",
+      "inLanguage": "en-AU",
+      "isPartOf": {
+        "@id": "https://www.commonground.cc/#website"
+      },
+      "publisher": {
+        "@id": "https://www.commonground.cc/#organisation"
+      },
+      "about": {
+        "@id": "https://www.commonground.cc/#organisation"
+      },
+      "primaryImageOfPage": {
+        "@type": "ImageObject",
+        "url": "https://www.commonground.cc/images/video/radial.png",
+        "caption": "Sustainable Australian forestry film produced by Commonground"
+      },
+      "mainEntity": [
+        {
+          "@id": "https://www.commonground.cc/#service-video"
+        }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body>
+  <!-- EDITING GUIDE
+       VIDEO: edit featured title and description, and the work-tile buttons below. Each work-tile data-id is a numeric Vimeo video ID; data-title and data-desc update the player text. Change background-image for the thumbnail and visible span text for its label. Copy a complete work-tile to add a project. Update the initial iframe and initial featured text together if changing the starting video.
+       Shared appearance: styles.css. Shared interactions and image lists: script.js.
+  -->
+
+  <!-- ===== PAGE HEADER ===== -->
+  <!-- SHARED HEADER: edit navigation text and href destinations here.
+       Navigation is repeated across all seven HTML pages: apply shared changes to each.
+       Logo: change images/logo.png and its alt text; favicon is images/mark.png in head.
+       menu-btn and nav classes are used by the shared mobile menu script. -->
+  <header class="page-head">
+    <div class="wrap bar">
+      <a class="logo" href="index.html"><img src="images/home/logo.png" alt="Commonground"></a>
+      <button class="menu-btn" aria-label="Menu"><span></span></button>
+      <nav class="nav">
+        <a href="video.html" class="is-on">Video</a>
+        <a href="photography.html">Photography</a>
+        <a href="brand.html">Brand</a>
+        <a href="clients.html">Clients</a>
+        <a href="about.html">About</a>
+        <a class="pill" href="contact.html">Get in Touch</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- VIDEO SECTION: edit heading/copy, initial embed or project tiles within this section. -->
+  <section class="page-hero" style="background-image:url('images/home/camera-rig.jpg')">
+    <div class="wrap"><p class="mark" style="color:#cecaaf">/ Video</p><h1>Stories that build trust.</h1></div>
+  </section>
+
+  <!-- ===== PAGE LEAD — service copy from commonground.cc
+       EXTEND: edit the two paragraphs. Featured film follows.
+  ===== -->
+  <!-- VIDEO SECTION: edit heading/copy, initial embed or project tiles within this section. -->
+  <section class="section" style="padding-bottom:20px">
+    <div class="wrap split">
+      <h2>Video production</h2>
+      <div class="prose">
+        <p>Stories have the power to build trust, communicate impact and inspire action. We make brand films, documentaries, healthcare education, training and campaign videos that help organisations connect with their audiences in a way that lasts.</p>
+        <p>From concept and filming through to edit and delivery, the work is built to amplify the message and bring the story to life — not to decorate it.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FEATURED FILM
+       EXTEND: add a .work-tile in the strip below with data-id, data-title, data-desc.
+       Title (#featured-title) and sentence (#featured-note) update on click.
+  ===== -->
+  <!-- VIDEO SECTION: edit heading/copy, initial embed or project tiles within this section. -->
+  <section class="section">
+    <div class="wrap">
+      <p class="mark">/ Featured</p>
+      <h2 id="featured-title">Sustainable Australian forestry</h2>
+      <div class="embed featured" id="work-player">
+        <iframe src="https://player.vimeo.com/video/1138413010?title=0&byline=0&portrait=0&color=7a765a" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen title="Sustainable Australian forestry"></iframe>
+      </div>
+      <p class="featured-note" id="featured-note">Commonground produced this documentary-style film for Heartwood Unlimited — farming, conservation, carbon investment and responsible land management, with Radial Timber.</p>
+    </div>
+  </section>
+
+  <!-- ===== WORK STRIP — Clique-style accordion on film black ===== -->
+  <!-- VIDEO SECTION: edit heading/copy, initial embed or project tiles within this section. -->
+  <section class="film-band">
+    <div class="wrap">
+      <p class="mark" style="color:#cecaaf">/ Our work</p>
+      <h2>Stories that connect people with purpose.</h2>
+      <p style="color:rgba(255,255,255,.65);max-width:46ch">From patient education and brand films to documentaries and community stories, our work helps people understand, builds trust and inspires action.</p>
+      <!-- Horizontal browsing cue; text and arrows remain visible on touch devices. -->
+      <p class="work-swipe-hint"><span aria-hidden="true">←</span> Swipe to explore <span aria-hidden="true">→</span></p>
+      <div class="work-strip" style="margin-top:12px">
+      <button class="work-tile is-on" type="button" style="background-image:url('images/video/radial.png')" data-id="1138413010" data-title="Sustainable Australian forestry" data-desc="Commonground produced this documentary-style film for Heartwood Unlimited — farming, conservation, carbon investment and responsible land management, with Radial Timber and Heartwood Unlimited." aria-label="Sustainable Australian forestry">
+        <span>Sustainable Australian forestry</span>
+      </button>
+      <button class="work-tile" type="button" style="background-image:url('images/video/cancer-services.jpg')" data-title="Cancer services education" data-id="1143319833" data-desc="Patient education film guiding people through treatment and recovery." aria-label="Cancer services education">
+        <span>Cancer Services Education</span>
+      </button>
+	<button class="work-tile" type="button" style="background-image:url('images/video/instep.jpg')" data-title="In Step" data-id="373717995" data-desc="Documentary short film." aria-label="In Step">
+        <span>In Step</span>
+      </button>
+	  <button class="work-tile" type="button" style="background-image:url('images/video/interpack.jpg')" data-title="Manufacturing excellence" data-id="720086557" data-desc="Corporate film with drone, motion graphics and quality-assurance story." aria-label="Manufacturing excellence">
+        <span>Interpack Manufacturing Excellence</span>
+      </button>
+      <button class="work-tile" type="button" style="background-image:url('images/video/smoking-cessation.jpg')" data-title="Smoking cessation" data-id="1087311822" data-desc="Patient resources covering conditions including lymphoma, asthma and diabetes." aria-label="Smoking cessation">
+        <span>Smoking Cessation</span>
+      </button>
+	  <button class="work-tile" type="button" style="background-image:url('images/video/generous.jpg')" data-title="Generous" data-id="514216228" data-desc="Promotional film for an online giving platform for charities." aria-label="Generous">
+        <span>Generous</span>
+      </button>
+	<button class="work-tile" type="button" style="background-image:url('images/video/everything.jpg')" data-title="Everything That Moves" data-id="562632324" data-desc="Short film on movement, music and performance." aria-label="Everything That Moves">
+        <span>Everything That Moves</span>
+      </button>
+      <button class="work-tile" type="button" style="background-image:url('images/video/real-estate.jpg')" data-title="Surgery School" data-id="1104856449" data-desc="A Real Estate Walkthrough" aria-label="Real Estate">
+        <span>Real Estate</span>
+      </button>
+	<button class="work-tile" type="button" style="background-image:url('images/video/kidshope.jpg')" data-title="Mentoring" data-id="392659527" data-desc="One-to-one mentoring for primary school children, featuring Tim Costello AO." aria-label="Mentoring">
+        <span>Kids Hope Mentoring</span>
+      </button>
+	<button class="work-tile" type="button" style="background-image:url('images/video/peace.jpg')" data-title="Peace" data-id="398425016" data-desc="Narrative short on a program addressing violence against women and girls." aria-label="Peace">
+        <span>Peace</span>
+      </button>
+      <button class="work-tile" type="button" style="background-image:url('images/video/psych-effects.jpg')" data-title="Psychological Impact" data-id="1099549122" data-desc="Digital Care Pathways series on pain and its management." aria-label="Psychological Impact">
+        <span>Psychological Impact</span>
+      </button>
+      <button class="work-tile" type="button" style="background-image:url('images/video/nantong.jpg')" data-title="Nan Tong" data-id="313039420" data-desc="The transformative story of a former monk, farmer, carpenter." aria-label="Nan-Tong">
+        <span>Nan Tong's Story</span>
+      </button>
+		  <button class="work-tile" type="button" style="background-image:url('images/video/urban-research.jpg')" data-title=" Urban Research" data-id="378540081" data-desc="Tackling the most pressing issues facing our cities today." aria-label="Nan-Tong">
+        <span>Urban Research</span>
+      </button>
+
+
+      </div>
+      <!-- strip hint only; the live sentence lives in #featured-note -->
+      <p class="work-desc">Click a frame to feature it above.</p>
+    </div>
+  </section>
+
+  <!-- FOOTER: update business name, location and phone. Keep tel: href in international format.
+       Repeat shared footer changes across the other HTML pages. -->
+  <footer class="site-foot wrap">
+    <span>Commonground Communication · Melbourne</span>
+    <a href="tel:+61390887586">(03) 9088 7586</a>
+  </footer>
+  <!-- Load shared interactions last. Keep this script link and the styles.css link in head. -->
+  <script src="script.js"></script>
+  <!-- VIDEO STRIP BEHAVIOUR: keep after script.js.
+       This page-scoped capture handler replaces the shared thumbnail click behaviour.
+       Add/edit work-tile buttons above as usual; no changes to this script are needed.
+       Centre selection during expansion, then return focus and viewport to the player. -->
+  <script>
+  (function () {
+    var strip = document.querySelector('.work-strip');
+    var player = document.getElementById('work-player');
+    var heading = document.getElementById('featured-title');
+    var note = document.getElementById('featured-note');
+    if (!strip || !player || !heading) return;
+    var tiles = Array.prototype.slice.call(strip.querySelectorAll('.work-tile'));
+    var active = strip.querySelector('.work-tile.is-on') || tiles[0];
+    var frame, scrollRun = 0, preview = null, hoverTimer;
+    var hoverLockedUntil = 0, lastPointerX = null, lastPointerY = null;
+    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+    heading.setAttribute('tabindex', '-1');
+    tiles.forEach(function (tile) { tile.setAttribute('aria-pressed', String(tile === active)); });
+    function targetLeft() {
+      var box = (preview || active).getBoundingClientRect(), viewport = strip.getBoundingClientRect();
+      var target = strip.scrollLeft + box.left - viewport.left - (strip.clientWidth - box.width) / 2;
+      return Math.max(0, Math.min(strip.scrollWidth - strip.clientWidth, target));
+    }
+    function centre(animate) {
+      if (!active) return;
+      cancelAnimationFrame(frame);
+      var run = ++scrollRun;
+      if (!animate || reduced.matches) { strip.scrollLeft = targetLeft(); return; }
+      var start = performance.now();
+      function tick(now) {
+        if (run !== scrollRun) return;
+        // Recalculate while the accordion changes width; preserve the visible neighbours.
+        var remaining = targetLeft() - strip.scrollLeft;
+        strip.scrollLeft += remaining * .24;
+        if (now - start < 650) frame = requestAnimationFrame(tick);
+        else strip.scrollLeft = targetLeft();
+      }
+      frame = requestAnimationFrame(tick);
+    }
+    // Only hover-capable pointers preview; touch continues to select on tap.
+    var hoverCapable = window.matchMedia('(hover:hover) and (pointer:fine)');
+    function clearPreview() {
+      clearTimeout(hoverTimer); preview = null;
+      hoverLockedUntil=performance.now()+700;
+      lastPointerX=null; lastPointerY=null;
+      strip.classList.remove('has-preview');
+      tiles.forEach(function(tile){tile.classList.remove('is-preview');});
+      centre(true);
+    }
+    // Pointer-enter fires when animated tiles slide beneath a stationary cursor.
+    // Use actual pointer movement and lock selection during accordion motion instead.
+    strip.addEventListener('pointermove', function(event) {
+      if (!hoverCapable.matches || event.pointerType === 'touch') return;
+      var moved = lastPointerX === null || Math.abs(event.clientX-lastPointerX) + Math.abs(event.clientY-lastPointerY) > 2;
+      if (!moved) return;
+      lastPointerX=event.clientX; lastPointerY=event.clientY;
+      var tile = event.target.closest('.work-tile');
+      if (!tile || !strip.contains(tile) || tile === preview) { clearTimeout(hoverTimer); return; }
+      clearTimeout(hoverTimer);
+      (function() {
+        // Keep the same point of this thumbnail beneath the cursor throughout expansion.
+        var before=tile.getBoundingClientRect();
+        var anchorX=lastPointerX;
+        var fraction=Math.max(0,Math.min(1,(anchorX-before.left)/before.width));
+        preview=tile; hoverLockedUntil=performance.now()+700;
+        cancelAnimationFrame(frame);
+        var run=++scrollRun;
+        strip.classList.add('has-preview');
+        tiles.forEach(function(item){item.classList.toggle('is-preview',item===tile);});
+        var started=performance.now();
+        function keepUnderPointer(now) {
+          if(run!==scrollRun || preview!==tile) return;
+          var box=tile.getBoundingClientRect();
+          strip.scrollLeft += box.left + box.width*fraction - anchorX;
+          if(now-started<700) frame=requestAnimationFrame(keepUnderPointer);
+        }
+        frame=requestAnimationFrame(keepUnderPointer);
+      })();
+    });
+    strip.addEventListener('pointerleave', clearPreview);
+    strip.addEventListener('click', function (event) {
+      var tile = event.target.closest('.work-tile');
+      if (!tile || !strip.contains(tile)) return;
+      // Suppress the old shared handler, avoiding duplicate iframe loads.
+      event.stopImmediatePropagation();
+      var id = tile.getAttribute('data-id');
+      if (!/^\d+$/.test(id || '')) return;
+      clearTimeout(hoverTimer); preview = null;
+      hoverLockedUntil=performance.now()+700;
+      lastPointerX=null; lastPointerY=null;
+      strip.classList.remove('has-preview');
+      tiles.forEach(function(item){item.classList.remove('is-preview');});
+      active = tile;
+      tiles.forEach(function (item) {
+        item.classList.toggle('is-on', item === tile);
+        item.setAttribute('aria-pressed', String(item === tile));
+      });
+      var title = tile.getAttribute('data-title') || tile.getAttribute('aria-label') || 'Selected film';
+      var iframe = document.createElement('iframe');
+      iframe.src = 'https://player.vimeo.com/video/' + id + '?title=0&byline=0&portrait=0&color=7a765a&autoplay=1';
+      iframe.title = title;
+      iframe.allow = 'autoplay; fullscreen; picture-in-picture';
+      iframe.setAttribute('allowfullscreen', '');
+      player.replaceChildren(iframe);
+      heading.textContent = title;
+      if (note) note.textContent = tile.getAttribute('data-desc') || '';
+      centre(true);
+      heading.focus({ preventScroll: true });
+      heading.scrollIntoView({ behavior: reduced.matches ? 'auto' : 'smooth', block: 'start' });
+    }, true);
+    // Manual navigation takes priority over an in-progress centring animation.
+    ['pointerdown', 'touchstart', 'wheel'].forEach(function (name) {
+      strip.addEventListener(name, function () { ++scrollRun; cancelAnimationFrame(frame); }, { passive: true });
+    });
+    if (typeof ResizeObserver !== 'undefined') {
+      new ResizeObserver(function () { centre(false); }).observe(strip);
+    } else window.addEventListener('resize', function () { centre(false); });
+    centre(false);
+  })();
+  </script>
+
+</body>
+</html>

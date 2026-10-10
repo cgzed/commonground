@@ -1,0 +1,1579 @@
+<!DOCTYPE html>
+
+<html lang="en-AU">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+
+<link href="images/mark.png" rel="icon"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;700;800&amp;family=Lato:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<style id="brand-preview-base">
+/* =========================================================
+   COMMONGROUND SITE
+   ========================================================= */
+
+/* --- tokens --- */
+:root {
+  --ink: #1a1a1a;
+  --slate: #5a5a5a;
+  --mute: #8a8a8a;
+  --line: #e6e2d8;
+  --paper: #f6f3ec;
+  --white: #ffffff;
+  --olive: #7a765a;
+  --olive-d: #5f5b43;
+  --film: #111;
+  --display: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --body: "Lato", Arial, sans-serif;
+}
+
+/* --- reset --- */
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  font: 400 17px/1.65 var(--body);
+  color: var(--ink);
+  background: var(--paper);
+  -webkit-font-smoothing: antialiased;
+}
+img { max-width: 100%; display: block; }
+a { color: inherit; }
+h1,h2,h3 { font-family: var(--display); margin: 0; letter-spacing: -0.025em; line-height: 1.12; }
+p { margin: 0 0 1em; }
+button, input, textarea, select { font: inherit; }
+
+.wrap { width: min(1120px, calc(100% - 40px)); margin: 0 auto; }
+.mark {
+  font-family: var(--display); font-size: 11px; font-weight: 700;
+  letter-spacing: .18em; text-transform: uppercase; color: var(--olive); margin: 0 0 14px;
+}
+
+/* =========================================================
+   HEADER / NAV
+   Home uses .site-head over the carousel (white type).
+   Inner pages use .page-head (ink type on cream).
+   Pill matches link height.
+   ========================================================= */
+.site-head, .page-head { z-index: 30; }
+.site-head { position: absolute; inset: 0 0 auto; padding: 18px 0; }
+.page-head { position: relative; background: var(--white); padding: 14px 0; border-bottom: 1px solid var(--line); }
+.bar { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+.logo img { height: 22px; width: auto; }
+.site-head .logo img { filter: invert(1); }
+.nav { display: flex; align-items: center; gap: 6px; font-family: var(--display); font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+.nav a {
+  text-decoration: none;
+  height: 36px;
+  padding: 0 14px;
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  line-height: 1;
+}
+.site-head .nav a { color: #fff; }
+.page-head .nav a { color: var(--ink); }
+.page-head .nav a.is-on { color: var(--olive); }
+.nav .pill {
+  background: #fff; color: var(--ink); border-color: #fff;
+}
+.page-head .nav .pill { background: var(--ink); color: #fff; border-color: var(--ink); }
+.menu-btn { display: none; background: 0; border: 0; width: 40px; height: 36px; cursor: pointer; color: inherit; }
+.site-head .menu-btn { color: #fff; }
+.page-head .menu-btn { color: var(--ink); }
+.menu-btn span { display: block; height: 1.5px; background: currentColor; position: relative; }
+.menu-btn span:before, .menu-btn span:after { content: ""; position: absolute; left: 0; right: 0; height: 1.5px; background: currentColor; }
+.menu-btn span:before { top: -7px; }
+.menu-btn span:after { top: 7px; }
+
+/* =========================================================
+   HOME — HEADER CAROUSEL
+   Crossfade + slow Ken Burns + slight slide.
+   Height is 75% of the original (was min(86vh, 760px)).
+   EXTEND: duplicate an <article class="slide"> in index.html,
+   set background-image, kicker and h2. Buttons already count slides.
+   ========================================================= */
+.carousel { position: relative; height: min(64.5vh, 570px); background: var(--film); overflow: hidden; }
+.slide {
+  position: absolute; inset: 0; opacity: 0;
+  background: #111 center/cover no-repeat;
+  transform: scale(1.08) translateX(4%);
+  transition: opacity 1.1s ease, transform 3.2s ease-out;
+}
+.slide.is-on { opacity: 1; transform: scale(1) translateX(0); z-index: 1; }
+.slide.is-leaving { opacity: 0; transform: scale(1.04) translateX(-3%); z-index: 2; }
+.slide::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(0,0,0,.18), rgba(0,0,0,.58) 72%);
+}
+.slide-copy { position: absolute; left: 0; right: 0; bottom: 0; z-index: 3; padding: 0 0 56px; color: #fff; }
+.slide-kicker { font-family: var(--display); font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: #cecaaf; margin-bottom: 10px; }
+.slide h2 { font-size: clamp(28px, 4vw, 48px); font-weight: 800; max-width: 16ch; }
+.car-nav {
+  position: absolute; right: max(20px, calc((100% - 1120px) / 2));
+  bottom: 52px; z-index: 4; display: flex; align-items: center; gap: 10px; color: #fff;
+  font-family: var(--display); font-size: 13px; letter-spacing: .08em;
+}
+.car-nav button {
+  width: 36px; height: 36px; border: 1px solid rgba(255,255,255,.4);
+  background: transparent; color: #fff; cursor: pointer; border-radius: 999px;
+}
+.car-nav button:hover { background: #fff; color: #111; }
+
+/* =========================================================
+   HOME — SECTIONS
+   01 intro · 02 service cards · 03 clients tease · CTA
+   EXTEND 02 cards: copy an <a class="card"> in index.html.
+   ========================================================= */
+.section { padding: 88px 0; }
+.intro h1 { font-size: clamp(32px, 5vw, 52px); margin-bottom: 22px; max-width: none; }
+.intro .copy { max-width: none; color: var(--slate); font-size: 18px; }
+
+.cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; margin-top: 36px; }
+.card {
+  background: var(--white); border-radius: 18px; overflow: hidden;
+  box-shadow: 0 10px 30px rgba(26,26,26,.05);
+  display: flex; flex-direction: column; min-height: 100%;
+  text-decoration: none; color: inherit;
+}
+.card-pic { position: relative; aspect-ratio: 4 / 3; overflow: hidden; background: #ddd; }
+.card-pic img { width: 100%; height: 100%; object-fit: cover; }
+.card-body { padding: 16px 18px 18px; }
+.card h3 { font-size: 20px; margin-bottom: 6px; }
+.card p { color: var(--slate); font-size: 14px; margin: 0 0 10px; }
+.card .go { font-family: var(--display); font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--olive); }
+
+.quote-nav { display: flex; align-items: center; gap: 8px; margin-top: 18px; font-family: var(--display); font-size: 12px; }
+.quote-nav button {
+  width: 36px; height: 36px; border: 1px solid var(--line); background: #fff; border-radius: 999px; cursor: pointer;
+}
+
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  margin-top: 18px; padding: 0 22px; height: 44px;
+  font-family: var(--display); font-size: 12px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; text-decoration: none;
+  background: var(--ink); color: #fff; border: 0; border-radius: 4px; cursor: pointer;
+}
+.btn:hover { background: var(--olive-d); }
+
+.cta { text-align: center; }
+.cta h2 { font-size: clamp(28px, 4vw, 44px); margin-bottom: 12px; }
+
+.site-foot {
+  border-top: 1px solid var(--line); padding: 22px 0 36px;
+  display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+  font-size: 13px; color: var(--mute);
+}
+
+/* =========================================================
+   INNER PAGE HERO
+   ========================================================= */
+.page-hero { height: 280px; background: #111 center/cover no-repeat; position: relative; display: flex; align-items: flex-end; }
+.page-hero::after { content: ""; position: absolute; inset: 0; background: linear-gradient(transparent, rgba(0,0,0,.55)); }
+.page-hero .wrap { position: relative; z-index: 1; color: #fff; padding-bottom: 28px; }
+.page-hero h1 { font-size: clamp(32px, 5vw, 52px); }
+.split { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; }
+.prose { max-width: 72ch; color: var(--slate); font-size: 18px; }
+.prose h2 { color: var(--ink); font-size: 28px; margin: 28px 0 10px; }
+
+/* =========================================================
+   VIDEO PAGE — featured + Clique-style work strip
+   ========================================================= */
+/* EXTEND video: copy a .work-tile button. Set data-id (Vimeo id),
+   data-title and data-desc. Thumbnail is the button's background-image. */
+	
+.featured { margin-bottom: 12px; }
+#featured-title { font-size: clamp(24px, 3vw, 34px); margin: 0 0 14px; }
+.embed { position: relative; padding-top: 56.25%; background: #111; border-radius: 14px; overflow: hidden; }
+.embed iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.featured-note { font-size: 15px; color: var(--slate); margin: 16px 0 0; max-width: 70ch; line-height: 1.55; min-height: 3em; }
+
+.film-band { background: var(--film); color: #fff; padding: 56px 0 72px; }
+.film-band h2 { color: #fff; }
+.work-strip {
+  display: flex; gap: 8px; overflow-x: auto; scroll-snap-type: x mandatory;
+  padding: 8px 0 4px;
+}
+.work-tile {
+  flex: 0 0 92px; height: 280px; border-radius: 14px; overflow: hidden;
+  position: relative; cursor: pointer; scroll-snap-align: start;
+  transition: flex-basis .45s ease;
+  background: #222 center/cover no-repeat;
+}
+.work-tile:hover { flex-basis: 150px; }
+.work-tile.is-on, .work-tile.is-on:hover { flex-basis: min(52vw, 560px); }
+.work-tile span {
+  position: absolute; left: 12px; right: 12px; bottom: 12px;
+  font-family: var(--display); font-size: 12px; letter-spacing: .06em;
+  text-transform: uppercase; color: #fff;
+  text-shadow: 0 1px 8px rgba(0,0,0,.5);
+}
+.work-desc { font-size: 13px; color: rgba(255,255,255,.72); margin-top: 16px; max-width: 70ch; }
+
+/* Photography: image ratios and row spans calculated in script.js. */
+	
+.cards-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.photography-page h1 { font-size: clamp(32px, 5vw, 52px); margin-bottom: 22px; }
+.photography-intro { max-width: 72ch; font-size: 18px; color: var(--slate); margin-bottom: 32px; }
+.gallery-tabs { display: flex; flex-wrap: wrap; gap: 10px; padding-bottom: 22px; border-bottom: 1px solid var(--line); }
+.gallery-tabs button { background: transparent; color: var(--slate); border: 1px solid var(--line); border-radius: 999px; padding: 11px 18px; cursor: pointer; font-size: 14px; }
+.gallery-tabs button[aria-pressed="true"] { background: var(--olive); color: #fff; border-color: var(--olive); }
+.gallery-stage { margin-top: 28px; min-height: 120px; }
+.gallery-grid { display: grid; grid-auto-rows: 8px; gap: 16px; align-items: start; }
+.gallery-photo { display: block; border: 0; padding: 0; border-radius: 12px; background: var(--line); overflow: hidden; cursor: zoom-in; min-width: 0; }
+.gallery-photo img { display: block; width: 100%; height: 100%; object-fit: contain; transition: filter .2s ease; }
+.gallery-photo:hover img { filter: brightness(.92); }
+.gallery-photo:focus-visible { outline: 3px solid var(--olive); outline-offset: 4px; }
+.gallery-status { margin: 20px 0 0; color: var(--slate); font-size: 13px; }
+.photography-cta { border-top: 1px solid var(--line); }
+.photo-lightbox { border: 0; padding: 24px; max-width: none; max-height: none; width: 100%; height: 100dvh; margin: 0; position: fixed; inset: 0; background: rgba(17,17,17,.98); color: #fff; z-index: 1000; }
+.photo-lightbox::backdrop { background: rgba(0,0,0,.85); }
+.lightbox-shell { max-width: 1500px; height: 100%; margin: auto; display: flex; flex-direction: column; gap: 18px; }
+.lightbox-header, .lightbox-controls { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-shrink: 0; }
+.lightbox-header h2 { font-size: 18px; }
+.photo-lightbox button { border: 1px solid #777; background: transparent; color: #fff; border-radius: 999px; padding: 10px 18px; min-height: 44px; cursor: pointer; font-size: 14px; }
+.photo-lightbox button:hover { background: #333; }
+.photo-lightbox button:focus-visible { outline: 3px solid #cecaaf; outline-offset: 3px; }
+.lightbox-frame { flex: 1; min-height: 0; display: flex; align-items: center; justify-content: center; }
+.lightbox-frame img { width: 100%; height: 100%; object-fit: contain; }
+.lightbox-controls { font-size: 13px; }
+@media(max-width: 550px) { .photo-lightbox { padding: 16px; } .photo-lightbox button { padding: 10px 12px; } .gallery-tabs { gap: 8px; } .gallery-tabs button { padding: 10px 13px; } }
+@media(prefers-reduced-motion: reduce) { .gallery-photo img { transition: none; } }
+
+/* Brand: equal featured cards, expandable selected work, modal case studies. */
+	
+.brand-page h1 { font-size: clamp(32px,5vw,52px); margin-bottom: 22px; }
+.brand-intro { max-width: 72ch; color: var(--slate); font-size: 18px; margin-bottom: 36px; }
+.brand-section-title { font-size: 30px; margin-bottom: 24px; }
+.brand-featured-grid { display: grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap: 22px; }
+.brand-project { background: #fff; border-radius: 14px; overflow: hidden; display: flex; flex-direction: column; }
+.brand-project > img { width: 100%; aspect-ratio: 4/3; object-fit: cover; }
+.brand-project-body { padding: 22px; display: flex; flex-direction: column; flex: 1; }
+.brand-project h3 { font-size: 23px; margin-bottom: 14px; }
+.brand-project p { color: var(--slate); font-size: 15px; }
+.brand-explore { margin-top: auto; align-self: flex-start; border: 0; border-bottom: 1px solid var(--olive); background: transparent; color: var(--olive-d); padding: 12px 0; cursor: pointer; font-size: 14px; }
+.brand-section { padding-top: 42px; margin-top: 56px; border-top: 1px solid var(--line); }
+.brand-section > h2 { font-size: 30px; margin-bottom: 18px; }
+.brand-selected-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 24px; }
+.brand-small-project img { width: 100%; aspect-ratio: 4/3; object-fit: cover; border-radius: 10px; margin-bottom: 16px; }
+.brand-small-project h3 { font-size: 19px; margin-bottom: 10px; }
+.brand-small-project p { font-size: 14px; color: var(--slate); }
+.brand-more { display: block; margin: 28px auto 0; padding: 11px 22px; border: 1px solid var(--line); border-radius: 999px; background: transparent; color: var(--olive-d); cursor: pointer; }
+.brand-more[hidden], .brand-small-project[hidden] { display: none; }
+.brand-steps { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 28px; }
+.brand-steps h3 { font-size: 23px; margin-bottom: 12px; }
+.brand-steps p { font-size: 15px; color: var(--slate); }
+.brand-cta { border-top: 1px solid var(--line); }
+.brand-case-dialog { position: fixed; inset: 0; margin: 0; width: 100%; height: 100dvh; max-width: none; max-height: none; border: 0; padding: 32px 20px; background: var(--paper); color: var(--ink); overflow-y: auto; z-index: 1000; }
+.brand-case-dialog::backdrop { background: rgba(0,0,0,.8); }
+.brand-case-shell { max-width: 1000px; margin: 0 auto; }
+.brand-case-header, .brand-case-nav { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.brand-case-header { margin-bottom: 36px; }
+.brand-case-header .mark { margin: 0; }
+.brand-case-dialog button { background: #fff; border: 1px solid var(--line); border-radius: 999px; padding: 11px 18px; color: var(--ink); cursor: pointer; font-size: 14px; }
+#brand-case-title { font-size: clamp(30px,5vw,48px); margin-bottom: 20px; }
+.brand-case-summary { max-width: 70ch; font-size: 18px; color: var(--slate); }
+.brand-case-image { width: 100%; max-height: 65vh; object-fit: contain; margin: 28px 0; border-radius: 12px; }
+.brand-case-scope h3 { font-size: 24px; margin-bottom: 12px; }
+.brand-case-scope p { color: var(--slate); }
+.brand-case-nav { padding-top: 24px; margin-top: 36px; border-top: 1px solid var(--line); font-size: 14px; }
+@media(max-width:900px) { .brand-featured-grid, .brand-steps { grid-template-columns: 1fr; } .brand-selected-grid { grid-template-columns: repeat(2,minmax(0,1fr)); } }
+@media(max-width:550px) { .brand-selected-grid { grid-template-columns: 1fr; } .brand-case-nav { gap: 10px; } .brand-case-dialog button { font-size: 12px; padding: 11px 14px; } }
+
+/* =========================================================
+   CLIENTS — featured quotes, then 4-up slider, then logo wall
+   EXTEND featured: copy a .qcard in the wide pair, add <img class="q-mark">.
+   EXTEND slider: copy a .qcard inside #t-row.
+   EXTEND logos: add { name, src } to logos[] in script.js
+   (PNG in images/logos/).
+   ========================================================= */
+.quote-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.qcard {
+  background: #fff; border-radius: 18px; padding: 22px 20px;
+  box-shadow: 0 10px 30px rgba(26,26,26,.05);
+}
+.qcard .q-mark {
+  width: 56px; height: 56px; border-radius: 10px; object-fit: cover;
+  margin-bottom: 14px; background: #ece8df;
+}
+.qcard p { margin: 0 0 16px; }
+.qcard cite { font-style: normal; color: var(--olive); font-family: var(--display); font-size: 12px; letter-spacing: .04em; }
+.t-slider { position: relative; }
+.t-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.t-row .qcard { min-height: 220px; }
+.logo-wall {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 10px;
+}
+.logo-cell {
+  background: #fff; border-radius: 12px; min-height: 88px;
+  display: flex; align-items: center; justify-content: center;
+  padding: 16px 12px; text-align: center;
+  filter: grayscale(1); opacity: .78;
+  transition: filter .25s, opacity .25s, transform .25s;
+}
+.logo-cell:hover { filter: none; opacity: 1; transform: translateY(-2px); }
+.logo-cell span { font-family: var(--display); font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+.logo-cell img { max-height: 42px; width: auto; }
+
+/* =========================================================
+   ABOUT — team
+   EXTEND: copy an <article class="member">, drop a square photo in images/team/.
+   ========================================================= */
+.team { display: grid; grid-template-columns: repeat(2, 1fr); gap: 28px; }
+.member { display: grid; grid-template-columns: 160px 1fr; gap: 18px; align-items: start; }
+.member img { width: 160px; height: 160px; object-fit: cover; border-radius: 18px; }
+.member h3 { margin-bottom: 4px; }
+.member .role { color: var(--olive); font-family: var(--display); font-size: 12px; letter-spacing: .1em; text-transform: uppercase; margin-bottom: 8px; }
+.member p { font-size: 15px; color: var(--slate); margin: 0; }
+
+/* =========================================================
+   CONTACT FORM
+   ========================================================= */
+form { display: grid; gap: 10px; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+label { font-family: var(--display); font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+input, textarea, select { border: 1px solid var(--line); background: #fff; padding: 12px; border-radius: 6px; width: 100%; }
+textarea { min-height: 140px; resize: vertical; }
+
+@media (max-width: 900px) {
+  .nav {
+    display: none; position: absolute; top: 62px; left: 0; right: 0;
+    background: var(--white); flex-direction: column; align-items: stretch;
+    padding: 12px 20px 18px; border-bottom: 1px solid var(--line);
+  }
+  .nav a { color: var(--ink) !important; }
+  .nav.is-open { display: flex; }
+  .menu-btn { display: block; }
+  .cards, .cards-2, .split, .quote-grid, .t-row, .team, .form-row, .member { grid-template-columns: 1fr; }
+  .carousel { height: 58.5vh; }
+  .section { padding: 56px 0; }
+  .work-tile { height: 220px; }
+}
+/* CHF GALLERY: portrait on the left spans both landscape cards on the right.
+   Keep all three figures in this order. Images use contain to preserve artwork. */
+.chf-assets { display:grid; grid-template-columns:minmax(0,2fr) minmax(0,3fr); grid-template-rows:repeat(2,minmax(0,1fr)); gap:20px; aspect-ratio:1.52; margin:0 0 48px; }
+.chf-assets .case-asset { position:relative; min-height:0; overflow:hidden; border-radius:12px; background:#fff; }
+.chf-assets .chf-portrait { grid-row:1 / 3; }
+.chf-assets .brand-case-image { display:block; width:100%; height:100%; max-height:none; margin:0; border-radius:0; object-fit:contain; }
+.chf-assets .case-placeholder { width:100%; height:100%; min-height:0; aspect-ratio:auto; box-sizing:border-box; }
+@media(max-width:600px) {
+  .chf-assets { grid-template-columns:minmax(0,1fr); grid-template-rows:auto; aspect-ratio:auto; gap:16px; }
+  .chf-assets .chf-portrait { grid-row:auto; aspect-ratio:1080/1780; }
+  .chf-assets .case-asset:not(.chf-portrait) { aspect-ratio:16/9; }
+}
+</style><link href="styles.css" rel="stylesheet"/>
+<style id="brand-project-styles">/* PAGE-LOCAL BRAND LAYOUT — keep edits here; shared pages are unaffected. */
+.brand-featured-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:22px; }
+.brand-project { background:#fff; border-radius:14px; overflow:hidden; display:flex; flex-direction:column; }
+/* FEATURED IMAGES: edge-to-edge, with corners clipped by the card above.
+   Swap the image src freely. A 3:2 image fits exactly; other shapes crop centrally.
+   Adjust object-position on an individual image if its focal point needs moving. */
+.brand-project > img { display:block; width:100%; aspect-ratio:3/2; object-fit:cover; object-position:center; flex-shrink:0; }
+.brand-project > .brand-logo-preview { background:transparent; padding:0; margin:0; border:0; border-radius:0; }
+.brand-project-body { padding:24px; display:flex; flex-direction:column; flex:1; }
+.brand-project h3 { font-size:23px; margin:0 0 12px; }
+.brand-project p { color:var(--slate); font-size:15px; }
+.brand-project .brand-card-line { font-size:16px; font-weight:700; color:var(--ink); margin-bottom:12px; }
+.brand-project .brand-credit { font-size:12px; color:var(--olive-d); margin:-4px 0 12px; }
+.brand-explore { margin-top:auto; align-self:flex-start; border:0; border-bottom:1px solid var(--olive); background:transparent; color:var(--olive-d); padding:12px 0; cursor:pointer; font-size:14px; }
+.brand-project { transition:box-shadow .2s ease; }
+.brand-project:hover { box-shadow:0 10px 28px #1a1a1a0d; }
+.brand-project button:focus-visible,.brand-detail-dialog button:focus-visible { outline:2px solid var(--olive-d); outline-offset:5px; }
+.brand-detail-dialog { position:fixed; inset:0; margin:0; width:100%; height:100dvh; max-width:none; max-height:none; border:0; padding:0 28px 40px; background:var(--paper); color:var(--ink); overflow-y:auto; overscroll-behavior:contain; }
+.brand-detail-dialog::backdrop { background:#111b; }
+.brand-detail-shell { max-width:1080px; margin:0 auto; }
+.brand-detail-header { position:sticky; top:0; z-index:2; display:flex; align-items:center; justify-content:space-between; gap:20px; padding:20px 0; background:var(--paper); border-bottom:1px solid var(--line); }
+.brand-detail-header .mark { margin:0; }
+.brand-detail-dialog button { border:1px solid var(--line); border-radius:999px; padding:10px 18px; background:#fff; color:var(--ink); cursor:pointer; font-size:13px; }
+.brand-detail-intro { padding:48px 0 32px; }
+.brand-detail-intro h2 { font-size:clamp(32px,4.4vw,58px); max-width:900px; margin:0 0 20px; }
+.brand-detail-intro .case-strapline { font-size:clamp(21px,2.4vw,29px); line-height:1.3; color:var(--olive-d); max-width:750px; margin-bottom:24px; }
+.case-intro-copy { max-width:770px; color:var(--slate); font-size:18px; line-height:1.7; }
+.case-intro-copy p:last-child { margin-bottom:0; }
+.case-figure { margin:0; }
+.case-figure img { display:block; width:100%; height:auto; object-fit:contain; background:#fff; border-radius:12px; }
+.case-figure figcaption { padding:10px 0 0; color:var(--slate); font-size:12px; }
+.case-story { display:grid; grid-template-columns:235px minmax(0,1fr); gap:64px; margin:44px 0; }
+.case-scope { border-top:1px solid var(--line); padding-top:20px; }
+.case-scope h3 { font-size:15px; margin:0 0 16px; }
+.case-scope ul { margin:0; padding:0; list-style:none; color:var(--slate); font-size:14px; }
+.case-scope li { padding:8px 0; border-bottom:1px solid var(--line); }
+.case-copy section+section { margin-top:32px; }
+.case-copy h3,.case-outcome h3 { font-size:26px; margin:0 0 16px; }
+.case-copy p,.case-outcome p { color:var(--slate); }
+.case-copy p:last-child { margin-bottom:0; }
+.case-assets { display:grid; grid-template-columns:1fr 1fr; gap:20px; margin:0 0 48px; }
+.case-asset { margin:0; min-width:0; }
+.case-asset.is-wide { grid-column:1/-1; }
+/* KIDS HOPE VISUALS: equal 16:9 cards, with no inherited image margins.
+   Photography fills its frame; artwork stays fully visible on white. */
+.kids-hope-assets > .case-asset { aspect-ratio:16/9; align-self:start; overflow:hidden; border-radius:12px; background:#fff; }
+.kids-hope-assets > .case-asset > .brand-case-image { display:block; width:100%; height:100%; max-height:none; margin:0; border-radius:0; object-fit:contain; }
+.kids-hope-assets > .case-asset:first-child > .brand-case-image { object-fit:cover; }
+.kids-hope-assets > .case-asset > .case-video { position:relative; width:100%; height:100%; background:#000; }
+
+.case-placeholder { min-height:220px; aspect-ratio:4/3; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; gap:9px; padding:24px; border:1px dashed #b8b29f; border-radius:12px; background:#eeebe3; color:#615d4c; }
+.case-asset.is-wide .case-placeholder { aspect-ratio:16/7; }
+.case-placeholder .asset-number { font-family:var(--display); font-size:12px; letter-spacing:.14em; }
+.case-placeholder strong { font-family:var(--display); font-size:20px; font-weight:400; }
+.case-placeholder small { font-size:12px; color:#706a59; }
+.case-placeholder::before { content:'+'; font-size:28px; font-weight:400; line-height:1; color:#8d866e; }
+.case-outcome { max-width:760px; margin:0 auto 44px; }
+.case-quote { margin:0; padding:34px 40px; background:#fff; border-radius:12px; }
+.case-quote blockquote { margin:0 0 20px; font-size:17px; line-height:1.65; }
+.case-quote figcaption { font-size:13px; color:var(--olive-d); }
+.case-contact { padding:36px 0 0; text-align:center; }
+.brand-detail-nav { display:flex; align-items:center; justify-content:space-between; gap:14px; margin-top:38px; border-top:1px solid var(--line); padding-top:24px; font-size:13px; }
+.brand-image-fallback { aspect-ratio:4/3; display:flex; align-items:center; justify-content:center; padding:24px; background:#e9e5d9; text-align:center; font:400 18px/1.4 var(--display); color:var(--olive-d); }
+.brand-small-project .brand-image-fallback { border-radius:10px; margin-bottom:16px; }
+.brand-preview-wordmark { font:800 19px/1 var(--display); letter-spacing:-.055em; }
+.brand-more[hidden],.brand-small-project[hidden] { display:none; }
+@media(max-width:900px) { .brand-featured-grid { grid-template-columns:1fr; } .brand-project { display:grid; grid-template-columns:40% 1fr; } .brand-project>img,.brand-project>.brand-image-fallback { align-self:stretch; height:100%; min-height:250px; aspect-ratio:auto; } .case-story { grid-template-columns:190px minmax(0,1fr); gap:32px; } }
+@media(max-width:600px) { .brand-project { display:flex; } .brand-project>img,.brand-project>.brand-image-fallback { height:auto; min-height:0; aspect-ratio:3/2; } .brand-detail-dialog { padding:0 20px 28px; } .brand-detail-header { gap:8px; padding:14px 0; } .brand-detail-header .mark { font-size:9px; letter-spacing:.09em; } .brand-detail-dialog button { min-height:44px; padding:10px 12px; font-size:12px; } .brand-detail-intro { padding-top:32px; } .case-story { display:flex; flex-direction:column; gap:30px; margin:32px 0; } .case-scope ul { display:flex; flex-wrap:wrap; gap:8px 18px; } .case-scope li { border:0; padding:0; } .case-assets { grid-template-columns:1fr; gap:16px; } .case-asset.is-wide { grid-column:auto; } .case-asset.is-wide .case-placeholder { aspect-ratio:4/3; } .case-placeholder { min-height:190px; } .case-quote { padding:26px 22px; } .case-intro-copy { font-size:17px; } .brand-detail-nav { gap:8px; } }
+@media(prefers-reduced-motion:reduce) { .brand-project { transition:none; } }
+
+.page-head .logo { text-decoration:none; }
+</style><style id="brand-featured-dark-style">
+/* FEATURED PROJECTS — film-black strip, matching the Video page. */
+.brand-featured-band { background:var(--film, #111); color:#fff; padding:56px 0 72px; margin-top:44px; }
+.brand-featured-band .mark { color:#cecaaf; }
+.brand-featured-band .brand-section-title { color:#fff; margin-bottom:28px; }
+.brand-featured-band .brand-project { background:#1d1d1b; border:1px solid #ffffff1c; box-shadow:none; }
+.brand-featured-band .brand-project:hover { border-color:#cecaaf70; box-shadow:0 12px 30px #0003; }
+.brand-featured-band .brand-project h3 { color:#fff; }
+.brand-featured-band .brand-project p { color:#d0d0c9; }
+.brand-featured-band .brand-project .brand-card-line { color:#f4f2e9; }
+.brand-featured-band .brand-project .brand-credit { color:#cecaaf; }
+.brand-featured-band .brand-explore { color:#e4dfc5; border-color:#938d72; }
+.brand-featured-band .brand-explore:hover { color:#fff; border-color:#e4dfc5; }
+.brand-featured-band .brand-explore:focus-visible { outline-color:#e4dfc5; }
+.brand-featured-band .brand-image-fallback { background:#292925; color:#cecaaf; }
+.brand-featured-band .brand-logo-preview { border-bottom:0; }
+.brand-featured-band + .wrap > .brand-section:first-of-type { border-top:0; margin-top:0; padding-top:56px; }
+@media(max-width:600px) { .brand-featured-band { padding:40px 0 48px; margin-top:32px; } .brand-featured-band .brand-section-title { font-size:28px; } }
+</style>
+<style id="selected-project-layout">
+/* HORIZONTAL PROJECT ROW: append more cards inside brand-selected-grid.
+   Card widths show part of the next project as a visual scrolling cue. */
+#brand-selected-grid { display:flex; flex-wrap:nowrap; gap:24px; overflow-x:auto; padding:4px 2px 18px; scroll-snap-type:x proximity; scroll-padding-inline:2px; scrollbar-width:none; }
+#brand-selected-grid::-webkit-scrollbar { display:none; }
+#brand-selected-grid > .brand-small-project { flex:0 0 calc((100% - 72px)/3.25); scroll-snap-align:start; }
+.brand-small-project { display:flex; flex-direction:column; min-width:0; }
+.brand-small-project > img { display:block; aspect-ratio:3/2; }
+.brand-small-project > .brand-explore { margin-top:auto; }
+.brand-scroll-nav { display:flex; align-items:center; justify-content:flex-end; gap:10px; margin:0 0 20px; }
+.brand-scroll-hint { font-size:12px; letter-spacing:.06em; color:var(--slate); margin-right:6px; }
+.brand-scroll-arrow { display:grid; place-items:center; width:34px; height:34px; border:1px solid var(--line); border-radius:50%; background:transparent; color:var(--olive-d); font-size:19px; cursor:pointer; }
+.brand-scroll-arrow:hover:not(:disabled) { background:var(--olive-d); color:#fff; }
+.brand-scroll-arrow:disabled { opacity:.3; cursor:default; }
+.brand-scroll-arrow:focus-visible, #brand-selected-grid:focus-visible { outline:2px solid var(--olive-d); outline-offset:3px; }
+.brand-empty-image { aspect-ratio:3/2; border:1px dashed var(--line); border-radius:10px; background:rgba(0,0,0,.025); }
+@media(max-width:1000px) { #brand-selected-grid > .brand-small-project { flex-basis:calc((100% - 48px)/2.2); } }
+@media(max-width:600px) { #brand-selected-grid { gap:18px; } #brand-selected-grid > .brand-small-project { flex-basis:85%; } }
+</style>
+
+<style id="compact-brand-case-styles">
+/* REUSABLE SHORT CASE STUDY: shared by any template using compact-brand-case.
+   Brand-specific colour is set on the template's article, not in these rules. */
+.compact-case-heading { border-bottom:2px solid var(--project-accent); margin-bottom:28px; }
+.compact-case-heading .mark { color:var(--olive-d); }
+.compact-case-hero { margin:0; overflow:hidden; border-radius:14px; background:#1d1d1b; }
+.compact-case-hero > img { display:block; width:100%; max-height:520px; object-fit:contain; }
+.compact-case-copy { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.5fr); gap:64px; margin:44px 0; }
+.compact-case-copy h3 { font-size:24px; margin:0 0 18px; }
+.compact-case-copy p { font-size:16px; line-height:1.75; color:var(--slate); margin:0 0 18px; }
+/* One divider only: the full-width heading rule above both copy columns. */
+.compact-case-summary { padding-top:24px; }
+.compact-case-outcome { padding-top:24px; }
+.compact-case-summary h4 { font-size:14px; margin:28px 0 10px; }
+.compact-case-services { list-style:none; padding:0; margin:0; }
+.compact-case-services li { border-bottom:1px solid var(--line); padding:9px 0; font-size:14px; color:var(--slate); }
+.compact-case-gallery { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:20px; }
+.compact-case-gallery figure { margin:0; min-width:0; }
+.compact-case-gallery img { display:block; width:100%; aspect-ratio:4/3; object-fit:cover; border-radius:12px; }
+.compact-photo-placeholder { aspect-ratio:4/3; border:1px dashed var(--project-accent); border-radius:12px; background:#f2ede1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; color:var(--slate); }
+.compact-photo-placeholder small { font-size:12px; }
+@media(max-width:700px) { .compact-case-copy { grid-template-columns:1fr; gap:16px; margin:28px 0; } .compact-case-gallery { grid-template-columns:1fr; } .compact-case-outcome { padding-top:8px; } }
+</style>
+<style id="compact-project-header-updates">
+/* DETAIL NAVIGATION: strong contrast makes the return action easy to find. */
+#brand-detail-close { background:#242620; color:#fff; border-color:#242620; font-weight:700; }
+#brand-detail-close:hover { background:#43473b; border-color:#43473b; }
+/* SMALL PROJECT HEADINGS: logo stays right of the project headline.
+   Logos use contain to preserve their original proportions. */
+.compact-case-heading { display:grid; grid-template-columns:minmax(0,1fr) 160px; align-items:center; gap:32px; }
+.compact-case-heading-copy { min-width:0; }
+/* White logo card integrates JPG backgrounds; keep the rounded container when replacing logos. */
+.compact-case-heading .compact-case-logos { display:flex; align-items:center; justify-content:center; gap:10px; padding:16px; background:#fff; border-radius:12px; overflow:hidden; }
+.compact-case-logos img { display:block; width:100%; max-width:160px; max-height:130px; object-fit:contain; }
+.compact-case-logos.is-collaboration img { width:calc((100% - 24px)/2); max-height:90px; }
+.compact-case-logos.is-collaboration span { font-size:18px; }
+@media(max-width:600px) {
+  .compact-case-heading { grid-template-columns:minmax(0,1fr) 90px; gap:16px; }
+  .compact-case-heading .compact-case-logos { flex-wrap:wrap; padding:10px; }
+  .compact-case-logos img { max-height:90px; }
+  .compact-case-logos.is-collaboration img { width:100%; max-width:75px; max-height:65px; }
+  .compact-case-heading h2 { font-size:clamp(25px,6vw,32px); overflow-wrap:break-word; }
+}
+</style>
+<style>
+/* THANKYOU ROLE CREDIT: separate the attribution subtly from the project story. */
+.compact-case-outcome .thankyou-role-credit { font-size:14px; margin-top:26px; color:var(--slate); }
+</style>
+
+<!-- SEO / SOCIAL METADATA: unique to this page. Deployment assumes www.commonground.cc
+     and the supplied .html navigation. Social image uses an existing site asset;
+     keep its path and filename case exact. -->
+<title>Brand Strategy &amp; Design Melbourne | Commonground</title>
+<meta name="description" content="Explore brand strategy, visual identity, and campaigns by Melbourne’s Commonground, with selected creative leadership and storytelling projects."/>
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"/>
+<meta name="author" content="Commonground Communication"/>
+<link rel="canonical" href="https://www.commonground.cc/brand.html"/>
+<meta property="og:type" content="website"/>
+<meta property="og:locale" content="en_AU"/>
+<meta property="og:site_name" content="Commonground Communication"/>
+<meta property="og:title" content="Brand Strategy &amp; Design Melbourne | Commonground"/>
+<meta property="og:description" content="Explore brand strategy, visual identity, and campaigns by Melbourne’s Commonground, with selected creative leadership and storytelling projects."/>
+<meta property="og:url" content="https://www.commonground.cc/brand.html"/>
+<meta property="og:image" content="https://www.commonground.cc/images/brand/kidshope-brand-title.png"/>
+<meta property="og:image:alt" content="Kids Hope brand identity"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="Brand Strategy &amp; Design Melbourne | Commonground"/>
+<meta name="twitter:description" content="Explore brand strategy, visual identity, and campaigns by Melbourne’s Commonground, with selected creative leadership and storytelling projects."/>
+<meta name="twitter:image" content="https://www.commonground.cc/images/brand/kidshope-brand-title.png"/>
+<meta name="twitter:image:alt" content="Kids Hope brand identity"/>
+	
+<!-- STRUCTURED DATA: grounded business and service facts; keep consistent across pages. -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organisation",
+      "@id": "https://www.commonground.cc/#organisation",
+      "name": "Commonground Communication",
+      "alternateName": "Commonground",
+      "url": "https://www.commonground.cc/",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://www.commonground.cc/images/home/logo.png"
+      },
+      "description": "Melbourne creative agency delivering video production, photography, brand strategy and communication campaigns for businesses, healthcare, education and not-for-profit organisations.",
+      "telephone": "+61-3-9088-7586",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Melbourne",
+        "addressRegion": "VIC",
+        "addressCountry": "AU"
+      },
+      "areaServed": [
+        {
+          "@type": "City",
+          "name": "Melbourne"
+        },
+        {
+          "@type": "Country",
+          "name": "Australia"
+        }
+      ],
+      "knowsAbout": [
+        "Video production",
+        "Photography",
+        "Brand strategy and design",
+        "Communication and campaign strategy"
+      ]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://www.commonground.cc/#website",
+      "url": "https://www.commonground.cc/",
+      "name": "Commonground Communication",
+      "alternateName": "Commonground",
+      "publisher": {
+        "@id": "https://www.commonground.cc/#organisation"
+      },
+      "inLanguage": "en-AU"
+    },
+    {
+      "@type": "Service",
+      "@id": "https://www.commonground.cc/#service-brand",
+      "name": "Brand strategy and design",
+      "serviceType": "Brand strategy and design",
+      "description": "Brand strategy, positioning, messaging, visual identity and creative direction.",
+      "provider": {
+        "@id": "https://www.commonground.cc/#organisation"
+      },
+      "areaServed": {
+        "@type": "Country",
+        "name": "Australia"
+      },
+      "url": "https://www.commonground.cc/brand.html"
+    },
+    {
+      "@type": "CollectionPage",
+      "@id": "https://www.commonground.cc/brand.html#webpage",
+      "url": "https://www.commonground.cc/brand.html",
+      "name": "Brand Strategy & Design Melbourne | Commonground",
+      "description": "Explore brand strategy, visual identity and campaigns by Melbourne’s Commonground, with selected creative leadership and storytelling projects.",
+      "inLanguage": "en-AU",
+      "isPartOf": {
+        "@id": "https://www.commonground.cc/#website"
+      },
+      "publisher": {
+        "@id": "https://www.commonground.cc/#organisation"
+      },
+      "about": {
+        "@id": "https://www.commonground.cc/#organisation"
+      },
+      "primaryImageOfPage": {
+        "@type": "ImageObject",
+        "url": "https://www.commonground.cc/images/brand/kidshope-brand-title.png",
+        "caption": "Kids Hope brand identity"
+      },
+      "mainEntity": [
+        {
+          "@id": "https://www.commonground.cc/#service-brand"
+        }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body>
+<!-- ===== PAGE HEADER ===== -->
+<!-- SHARED HEADER: edit navigation text and href destinations here.
+       Navigation is repeated across all seven HTML pages: apply shared changes to each.
+       Logo: change images/logo.png and its alt text; favicon is images/mark.png in head.
+       menu-btn and nav classes are used by the shared mobile menu script. -->
+	
+<header class="page-head">
+<div class="wrap bar">
+<a class="logo" href="index.html">
+<img alt="Commonground" src="images/home/logo.png"/>
+</a>
+<button aria-label="Menu" class="menu-btn">
+<span>
+</span>
+</button>
+<nav class="nav">
+<a href="video.html">Video</a>
+<a href="photography.html">Photography</a>
+<a class="is-on" href="brand.html">Brand</a>
+<a href="clients.html">Clients</a>
+<a href="about.html">About</a>
+<a class="pill" href="contact.html">Get in Touch</a>
+</nav>
+</div>
+</header>
+<!-- EDITING GUIDE
+       This page uses the shared styles.css and script.js supplied with this update.
+       1. INTRO: edit the heading and paragraph below.
+       2. FEATURED CARDS: edit each image src, alt, heading and summary.
+          Keep data-case="project-key" matched to template id="case-project-key".
+       3. SMALLER WORK: copy an article.brand-small-project to add a project.
+          Add data-extra-work to cards that should start behind Show more work.
+       4. CASE STUDIES: edit the templates near the bottom of this file.
+          Card images and case-study images are separate
+  -->
+<main class="section brand-page">
+<div class="wrap">
+<!-- INTRO: page label, main headline and introductory copy. -->
+<p class="mark">/ Brand &amp; communication</p>
+<h1>Find what matters.<br/>Make it clear.</h1>
+<p class="brand-intro">A trusted brand starts with clarity. We help organisations define their purpose, articulate their value, tighten messaging and build identities that create a genuine connection with the people they serve.</p>
+</div>
+<!-- FEATURED DARK STRIP: matches the video page film-band. Keep this section outside .wrap; the inner .wrap aligns the content. -->
+<section aria-labelledby="featured-brands-heading" class="brand-featured-band">
+<div class="wrap">
+<p class="mark">/ 01 · Featured brand projects</p>
+<h2 class="brand-section-title" id="featured-brands-heading">Purpose shaped into identity.</h2>
+<!-- FEATURED PROJECTS: all cards use the same size and styling.
+             To add a featured project, copy a complete article.brand-project.
+             Give its button a unique data-case value (e.g. new-project).
+             Copy a template below and name it id="case-new-project".
+             The grid and case-study navigation adapt automatically. -->
+<div class="brand-featured-grid">
+<!-- FEATURED CARD: image src and alt; title; summary; Explore button.
+               Do not remove data-case or change it without renaming its template. -->
+<article class="brand-project">
+<!-- IMAGE: edit src for the file path and alt for its description; preserve layout classes. -->
+<img alt="Kids Hope Australia · Brand evolution and visual language" class="brand-logo-preview" loading="eager" src="images/brand/kidshope-brand-title.png"/>
+<div class="brand-project-body">
+<h3>Kids Hope Australia</h3>
+<p class="brand-card-line">A clearer voice. A shared purpose.</p>
+<p>Brand foundations, visual identity and communications strategy for Kids Hope Australia—brought to life through photography, video and fundraising campaigns that communicate the value of one-to-one mentoring.</p>
+<button aria-haspopup="dialog" class="brand-explore" data-case="kids-hope" type="button">Explore the project ↗</button>
+</div>
+</article>
+<article class="brand-project">
+<img alt="Thankyou — selected work" data-fallback="Thankyou · Project image" loading="eager" class="brand-logo-preview" src="images/brand/thankyou-title.png"/>
+<div class="brand-project-body">
+<h3>Thankyou</h3>
+<!-- OVERVIEW COPY: keep the full project text in case-thankyou below. -->
+<p class="brand-card-line">Creative direction for everyday products with a greater purpose.</p>
+<p>Bringing product, purpose and storytelling together for a social enterprise connecting everyday purchases with its mission to help end extreme poverty. The work spanned brand, packaging, campaigns and creative production across Thankyou Water, Food, Body, Thankyou Baby and Chapter One.</p>
+<button aria-haspopup="dialog" class="brand-explore" data-case="thankyou" type="button">Explore the project ↗</button>
+</div>
+</article>
+
+<!-- FEATURED CARD: image src and alt; title; summary; Explore button.
+               Do not remove data-case or change it without renaming its template. -->
+<article class="brand-project">
+<!-- IMAGE: edit src for the file path and alt for its description; preserve layout classes. -->
+<img alt="Centre for Human Flourishing · Identity rationale" class="brand-logo-preview" loading="eager" src="images/brand/chf-brand-title.png"/>
+<div class="brand-project-body">
+<h3>Centre for Human Flourishing</h3>
+<p class="brand-credit">Developed for AIFC</p>
+<p class="brand-card-line">Giving a new vision its foundations.</p>
+<p>Brand strategy, narrative and visual identity for a new organisation connecting professional counselling and coaching with community wellbeing. We helped AIFC articulate its vision and establish a distinctive brand grounded in compassion, connection and renewal.</p>
+<button aria-haspopup="dialog" class="brand-explore" data-case="human-flourishing" type="button">Explore the project ↗</button>
+</div>
+</article>
+<!-- FEATURED CARD: image src and alt; title; summary; Explore button. 
+Do not remove data-case or change it without renaming its template. -->
+
+</div>
+</div>
+</section>
+<div class="wrap">
+<section aria-labelledby="selected-brands-heading" class="brand-section">
+<p class="mark">/ 02 · More selected work</p>
+<h2 id="selected-brands-heading">Ideas expressed in many ways.</h2>
+<p class="brand-intro">Selected projects across brand, campaigns, design and messaging.</p>
+<!-- SMALLER PROJECTS: one scrolling row. Copy an article below to add a card;
+     also add its matching case template. Navigation adjusts automatically. -->
+<div class="brand-scroll-nav" aria-label="Project row navigation">
+  <span class="brand-scroll-hint">Swipe to explore</span>
+  <button class="brand-scroll-arrow" id="brand-scroll-prev" type="button" aria-label="Previous projects" aria-controls="brand-selected-grid" disabled>←</button>
+  <button class="brand-scroll-arrow" id="brand-scroll-next" type="button" aria-label="Next projects" aria-controls="brand-selected-grid">→</button>
+</div>
+<div class="brand-selected-grid" id="brand-selected-grid" role="region" aria-label="More selected projects, scroll horizontally" tabindex="0">
+<article class="brand-small-project">
+<img alt="End the Cycle — CBM — selected work" data-fallback="End the Cycle — CBM · Project image" loading="lazy" src="images/brand/end-the-cycle-title.png"/>
+<h3>End the Cycle — CBM Australia</h3>
+<!-- CARD SUMMARY: edit separately from the expanded project below. -->
+<p>Creative leadership for an initiative raising awareness of the cycle of poverty and disability. Working alongside CBM Australia and its partners, we helped shape End the Cycle’s brand, messaging and public presence through photography, video, digital communication and campaign materials.</p>
+<button aria-haspopup="dialog" class="brand-explore" data-case="end-the-cycle" type="button">Learn more ↗</button>
+</article>
+<!-- DEEPEN CARD: paper title artwork appears only in this overview.
+     Save the approved charcoal/blue image as images/brand/deepen-title.png. -->
+<article class="brand-small-project">
+<img alt="Deepen app icon" data-fallback="Deepen · Project image" loading="lazy" src="images/brand/deepen-title.png"/>
+<h3>Deepen App</h3>
+<!-- CARD SUMMARY: edit separately from the expanded project below. -->
+<p>Brand development and creative production for a digital app helping people connect more deeply with the ideas they encounter. From messages, sermons, and seminars to lectures and conferences, Deepen encourages audiences to engage, reflect and carry their learning beyond the live session.</p>
+<button aria-haspopup="dialog" class="brand-explore" data-case="deepen" type="button">Learn more ↗</button>
+</article>
+<article class="brand-small-project">
+<img alt="Stageminded — selected project image" data-fallback="Stageminded · Project image" loading="lazy" src="images/brand/stageminded-title.png"/>
+<h3>Stageminded</h3>
+<!-- CARD SUMMARY: edit independently of the detailed project below. -->
+<p>Establishing a brand that connects performance psychology with the demands of professional dance. Stageminded supports dancers working in companies around the world through counselling and practical mindset training, helping them build confidence, navigate pressure and thrive both on and beyond the stage.</p>
+<button aria-haspopup="dialog" class="brand-explore" data-case="stageminded" type="button">Learn more ↗</button>
+</article>
+<article class="brand-small-project">
+<img alt="Trish Marks Coaching — selected work" data-fallback="Trish Marks Coaching · Project image" loading="lazy" src="images/brand/trishmarks-title.png"/>
+<h3>Trish Marks Coaching</h3>
+<!-- CARD SUMMARY: edit this separately from the full project panel below. -->
+<p>Repositioning Marks Consultancy as a personal coaching brand for life and business, resulting in a clearer positioning and a more personal identity for a coaching practice focused on lasting change in life and business.</p>
+<button aria-haspopup="dialog" class="brand-explore" data-case="trish-marks" type="button">Learn more ↗</button>
+</article>
+<!-- IGA × DEAKIN CARD: edit the image path, title and summary here. -->
+<article class="brand-small-project">
+<img alt="IGA × Deakin University collaboration" data-fallback="IGA × Deakin University · Project image" loading="lazy" src="images/brand/deakin-iga-title.png"/>
+<h3>IGA × Deakin University</h3>
+<p>Creative development for a supermarket research intervention encouraging healthier food choices. Working with Deakin University and participating Champions IGA supermarkets, we brought healthy eating messages into the shopping environment through vibrant food photography, clear messaging and coordinated in-store design.</p>
+<button aria-haspopup="dialog" class="brand-explore" data-case="deakin-iga" type="button">Learn more ↗</button>
+</article>
+<!-- ADD MORE PROJECT CARDS HERE: no fixed slot count or empty cards required. -->
+</div>
+</section>
+<section aria-labelledby="brand-approach-heading" class="brand-section">
+<p class="mark">/ 03 · Our approach</p>
+<h2 id="brand-approach-heading">Clarity before creativity.</h2>
+<!-- APPROACH: edit the three headings and descriptions. -->
+<div class="brand-steps">
+<div>
+<h3>Discover</h3>
+<p>Understand the people, purpose and challenge.</p>
+</div>
+<div>
+<h3>Define</h3>
+<p>Find the idea and language that bring clarity.</p>
+</div>
+<div>
+<h3>Express</h3>
+<p>Give that thinking a distinctive, useful form.</p>
+</div>
+</div>
+</section>
+</div>
+</main>
+<!-- CONTACT CTA: edit the headline, supporting sentence and destination href. -->
+<section class="section cta brand-cta">
+<div class="wrap">
+<h2>What does your organisation stand for?</h2>
+<p>Every project begins with a conversation.</p>
+<a class="btn" href="contact.html">Get in Touch</a>
+</div>
+</section>
+<!-- SHARED OVERLAY: keep these IDs; JavaScript uses them for controls and focus. -->
+<dialog aria-labelledby="brand-detail-title" class="brand-detail-dialog" id="brand-detail-dialog">
+<div class="brand-detail-shell">
+<header class="brand-detail-header">
+<p class="mark">/ Brand · Case study</p>
+<button id="brand-detail-close" type="button">Back to projects ×</button>
+</header>
+<div id="brand-detail-content">
+</div>
+<nav aria-label="Case study navigation" class="brand-detail-nav">
+<button id="brand-detail-prev" type="button">← Previous project</button>
+<span id="brand-detail-count" role="status">
+</span>
+<button id="brand-detail-next" type="button">Next project →</button>
+</nav>
+</div>
+</dialog>
+	
+<!-- Expand these templates with confirmed challenge, thinking, outcomes and images.
+       Existing descriptions are retained; unprovided case-study details are not invented. -->
+<!-- CASE STUDY: template ID must match the featured button data-case.
+       Edit this project title, summary, image and contribution; add sections below. -->
+<!-- EDIT Kids Hope Australia: full approved copy from Brand projects.docx.
+     Edit each image src directly. Logo artwork uses /images/brand/ filenames.
+     The card image and the case-study image can be changed independently. -->
+	
+<template id="case-kids-hope">
+<!-- PROJECT HEADER: logo sits beside the headline in a rounded white card.
+     Change the logo src to match the filename in images/clients/. -->
+<header class="brand-detail-intro compact-case-heading" style="--project-accent:#ba3344;">
+  <div class="compact-case-heading-copy">
+
+<p class="mark">Brand strategy · Identity · Communication</p>
+<h2 id="brand-detail-title">Kids Hope Australia</h2>
+<p class="case-strapline">Expressing the hope behind every mentoring relationship.</p>
+  </div>
+  <div class="compact-case-logos">
+    <img src="images/clients/kids-hope-australia.jpg" alt="Kids Hope Australia logo"/>
+  </div>
+</header>
+	
+<!-- INTRODUCTION: retained below the header; project visuals follow. -->
+<div class="case-intro-copy">
+<p>Kids Hope Australia connects churches and primary schools to provide one-to-one mentoring for children. As the organisation grew, it needed a brand and communications approach that could express its purpose clearly and bring schools, churches, mentors and supporters into a shared story.</p>
+</div>
+<figure class="case-figure">
+</figure>
+<div class="case-story">
+<aside class="case-scope">
+<h3>Our contribution</h3>
+<ul>
+<li>Brand foundations</li>
+<li>Narrative &amp; messaging</li>
+<li>Communications strategy</li>
+<li>Visual identity &amp; guidelines</li>
+<li>Creative direction</li>
+<li>Photography &amp; video</li>
+<li>Campaigns &amp; fundraising</li>
+</ul>
+</aside>
+<div class="case-copy">
+<section>
+<h3>The challenge</h3>
+<p>Different audiences were hearing different versions of the organisation’s story. Communications needed greater consistency, while fundraising needed to build a broader base of support. The task was to establish strong foundations and translate them into a recognisable identity, a coherent voice and practical ways for people to get involved.</p>
+</section>
+<section>
+<h3>The thinking</h3>
+<p>We centred the brand on the value of every child and the confidence, resilience and joy that caring relationships can nurture. This shaped the narrative, values and messaging, with an emphasis on children’s potential and agency.</p>
+<p>The communications approach connected two intentions: ignite hearts through authentic stories, then inspire action through clear, relevant invitations to mentor, partner or give.</p>
+</section>
+<section>
+<h3>The work</h3>
+<p>Commonground developed the brand foundations, organisational narrative, articulated values and audience-specific messaging. A comprehensive communications strategy connected these foundations to channels, campaigns, supporter engagement and fundraising.</p>
+<p>The refreshed visual identity retained a connection to Kids Hope’s origins while giving it a distinctly Australian expression. The child, heart and supporting wordmark communicated care, possibility and a hopeful future. Brand guidelines brought the identity together through logo use, colour, typography and supporting graphics.</p>
+<p>Our work extended into creative direction, photography, video production, campaign development and fundraising communications, carrying the brand’s purpose into the stories and experiences people encountered.</p>
+</section>
+</div>
+</div>
+<!-- VISUAL ASSETS: each figure reserves space for one future asset.
+      Replace its .case-placeholder div with an img using class="brand-case-image"
+      and descriptive alt text. Remove placeholder labels once replaced.
+      Only add a video play control after the actual video URL is supplied. -->
+<div aria-label="Kids Hope project visuals" class="case-assets kids-hope-assets">	
+	
+	<!-- VISUAL 01: Mentoring photography -->
+<figure class="case-asset">
+  <img
+    src="images/brand/kidshope-DSCF0875.jpg"
+    class="brand-case-image"
+    alt="Kids Hope mentoring photography"
+    loading="lazy"
+  />
+</figure>
+	
+	<!-- VISUAL 02: Brand Guide -->
+<figure class="case-asset">
+  <img
+    src="images/brand/kidshope_styleguide.jpg"
+    class="brand-case-image"
+    alt="Kids Hope Brand Guideline"
+    loading="lazy"
+  />
+</figure>
+	
+	<!-- VISUAL 03: Collateral -->
+<figure class="case-asset">
+  <img
+    src="images/brand/kidshope-collateral.jpg"
+    class="brand-case-image"
+    alt="Kids Hope Print Collateral"
+    loading="lazy"
+  />
+</figure>
+	
+<!-- VISUAL 04: Video. -->
+<figure class="case-asset">
+  <div class="case-video">
+    <iframe
+      src="https://player.vimeo.com/video/392659527"
+      title="Kids Hope — Hope in the life of every child"
+      loading="lazy"
+      allow="autoplay; fullscreen; picture-in-picture"
+      allowfullscreen
+      style="position:absolute; inset:0; width:100%; height:100%; border:0;"
+    ></iframe>
+  </div>
+</figure>
+
+</div>
+	
+<section class="case-outcome">
+<h3>The difference</h3>
+<p>The work gave Kids Hope a shared foundation for explaining who it is, what it stands for and how people can participate. Strategy, language and visual identity formed a consistent framework the team could apply across everyday communications and future campaigns. See www.kidshope.org.au</p>
+</section>
+<figure class="case-quote">
+<blockquote>“Commonground developed and updated the Kids Hope brand, design, and positioning. They also did an impressive job setting the direction for our communications. The feedback from the team was very positive and everyone found them fantastic to work with.”</blockquote>
+<figcaption>Gail Cameron, Kids Hope</figcaption>
+</figure>
+<div class="case-contact">
+<a class="btn" href="contact.html">Discuss your project</a>
+</div>
+</template>
+	
+<!-- CASE STUDY: template ID must match the featured button data-case.
+       Edit this project title, summary, image and contribution; add sections below. -->
+<!-- EDIT Centre for Human Flourishing: 
+     Edit each image src directly. Logo artwork uses /images/brand/ filenames.
+     The card image and the case-study image can be changed independently. -->
+	
+<template id="case-human-flourishing">
+<!-- PROJECT HEADER: logo sits beside the headline in a rounded white card.
+     Change the logo src to match the exact filename in images/clients/. -->
+<header class="brand-detail-intro compact-case-heading" style="--project-accent:#649d9d;">
+  <div class="compact-case-heading-copy">
+
+<p class="mark">Developed for AIFC · Brand foundations &amp; identity</p>
+<h2 id="brand-detail-title">Centre for Human Flourishing</h2>
+<p class="case-strapline">Giving a new vision its foundations.</p>
+  </div>
+  <div class="compact-case-logos">
+    <img src="images/clients/aifc.jpg" alt="Australian Institute For Counselling"/>
+  </div>
+</header>
+<!-- INTRODUCTION: retained below the header; project visuals follow. -->
+<div class="case-intro-copy">
+<p>AIFC had a vision to extend its contribution beyond training counsellors and coaches. A new organisation would connect professional services with community needs, serving businesses and individuals while attracting support to make care accessible to underserved communities.</p>
+<p>Commonground worked with AIFC to establish the brand foundations and visual identity for the Centre for Human Flourishing.</p>
+</div>
+<figure class="case-figure">
+</figure>
+<div class="case-story">
+<aside class="case-scope">
+<h3>Our contribution</h3>
+<ul>
+<li>Organisational clarity</li>
+<li>Brand foundations</li>
+<li>Narrative &amp; positioning</li>
+<li>Voice, personality &amp; values</li>
+<li>Creative direction</li>
+<li>Visual identity</li>
+<li>Brand guidelines</li>
+</ul>
+</aside>
+<div class="case-copy">
+<section>
+<h3>The challenge</h3>
+<p>The ambition brought together several entities, platforms and service offerings. Before the brand could take shape, their relationships needed clarification: what the Centre would offer, who it would serve and how it would connect with the wider AIFC organisation.</p>
+<p>The brand also needed to express its Christian values through a professional, approachable identity that could engage a broad audience.</p>
+</section>
+<section>
+<h3>The thinking</h3>
+<p>Working with AIFC, we helped clarify the organisational and service framework, then articulated the Centre’s purpose, mission, vision and value proposition.</p>
+<p>“Restored Lives | Renewed Communities” became the central expression of its purpose, connecting individual wellbeing with the positive influence people can have on families, workplaces and communities.</p>
+<p>Four values—compassion, presence, wellbeing and renewal—shaped a personality that was calm, trustworthy and quietly confident. The Centre would be an organisation that walks alongside people, helping them find clarity, purpose and possibility.</p>
+</section>
+<section>
+<h3>The work</h3>
+<p>We developed the brand narrative, messaging foundations, personality and creative direction, then explored visual approaches that expressed growth, healing and human connection.</p>
+<p>The selected identity used layered organic forms to suggest flourishing from a solid foundation. Colour and typography connected the new organisation to the AIFC brand family while establishing its own distinctive presence.</p>
+<p>A practical style guide brought together the strategic foundations, logo variations, colour palette, typography and usage rules.</p>
+</section>
+</div>
+</div>
+<!-- CHF VISUAL ASSETS: one tall image left, two landscape images right.
+     Upload the supplied concept sketch to images/brand/chf-logo-concepts.png.
+     RIGHT-HAND IMAGES: remove each case-placeholder div and uncomment its img.
+     Change the filenames and alt descriptions to suit your final artwork. -->
+<div aria-label="Centre for Human Flourishing brand development visuals" class="chf-assets">
+  <!-- LEFT: portrait artwork spans the full height of both right-hand cards. -->
+  <figure class="case-asset chf-portrait">
+    <img src="images/brand/chf-logo-concepts.png" class="brand-case-image"
+         alt="Hand-drawn Centre for Human Flourishing logo concepts exploring organic forms" loading="lazy"/>
+  </figure>
+  <!-- TOP RIGHT: replace the placeholder div with the image line below. -->
+  <figure class="case-asset">
+    <img src="images/brand/aifc-chf-brand-dev.jpg" class="brand-case-image"
+         alt="Logo Concept Development for Centre for Human Flourishing" loading="lazy"/>
+  </figure>
+  <!-- BOTTOM RIGHT: replace the placeholder div with the image line below. -->
+  <figure class="case-asset">
+    <img src="images/brand/chf_styleguide.jpg" class="brand-case-image" alt="Centre for Human Flourishing logo" loading="lazy"/>
+  </figure>
+</div>
+<section class="case-outcome">
+<h3>The difference</h3>
+<p>AIFC’s vision took shape as a defined brand, with a clear purpose, articulated services and a coherent verbal and visual identity. These foundations gave the team a shared reference for presenting the Centre and guiding its future communications.</p>
+</section>
+<figure class="case-quote">
+<blockquote>“The team at Commonground worked closely with us to build relationship, understand why we exist, our purpose and vision. This informed the creative process and the development of our brand identity in the formation of a new charity - the Centre for Human Flourishing. The work was professional and of a very high standard and I have no hesitation in recommending Commonground Communication.”</blockquote>
+<figcaption>Nicholas Marks, CEO, AIFC</figcaption>
+</figure>
+<div class="case-contact">
+<a class="btn" href="contact.html">Discuss your project</a>
+</div>
+</template>
+<!-- CASE STUDY: template ID must match the featured button data-case.
+       Edit this project title, summary, image and contribution; add sections below. -->
+
+<!-- THANKYOU PROFILE: edit this complete template to update the expanded project.
+     Overview paper-card image remains in the featured card above.
+     The role credit below the copy identifies the context of this work. -->
+<template id="case-thankyou">
+<article class="compact-brand-case" style="--project-accent:#292929;">
+  <!-- HEADER: logo stays to the right of the headline in a white rounded card. -->
+  <header class="brand-detail-intro compact-case-heading">
+    <div class="compact-case-heading-copy">
+      <p class="mark">Creative direction · Brand · Packaging · Production</p>
+      <h2 id="brand-detail-title">Thankyou</h2>
+      <p class="case-strapline">Creative direction for everyday products with a greater purpose.</p>
+    </div>
+    <!-- LOGO: change src to the exact filename in your images/clients folder. -->
+    <div class="compact-case-logos">
+      <img src="images/clients/thankyou.jpg" alt="Thankyou logo"/>
+    </div>
+  </header>
+  <!-- PROJECT COPY: summary/contributions left, outcome right; stacks on mobile. -->
+  <div class="compact-case-copy">
+    <section class="compact-case-summary">
+      <h3>Summary</h3>
+      <p>Bringing product, purpose and storytelling together for a social enterprise connecting everyday purchases with its mission to help end extreme poverty. The work spanned brand, packaging, campaigns and creative production across Thankyou Water, Food, Body, Baby and Chapter One.</p>
+      <h4>Our contribution</h4>
+      <ul class="compact-case-services">
+        <li>Creative direction and brand development</li>
+        <li>Product and packaging design</li>
+        <li>Food packaging refresh and water product development</li>
+        <li>Thankyou Baby packaging concepts</li>
+        <li>Chapter One book design</li>
+        <li>Collaboration concepts, pitch materials and presentations</li>
+        <li>Marketing and campaign creative direction</li>
+        <li>Brand photography, video production and field storytelling</li>
+        <li>Website and digital creative direction</li>
+      </ul>
+    </section>
+    <section class="compact-case-outcome">
+      <h3>The Outcome</h3>
+      <p>A shared creative direction connected a diverse range of products and projects, expressing Thankyou’s purpose across packaging, photography, film and digital experiences. Strategic thinking and hands-on production brought together the work of internal teams and external creative partners.</p>
+      <p>Key projects included refreshing the food range’s packaging and developing new visual approaches for Thankyou Water. Packaging concepts for Thankyou Baby and design for the Chapter One book project extended that thinking into new categories, each with its own audience and place within the wider brand.</p>
+      <p>Brand photography, product shoots and video production brought these projects to life. Field storytelling connected the products with the people and projects behind Thankyou’s social purpose, creating material for campaigns and brand communications.</p>
+      <p>Collaboration concepts, pitch materials and presentations explored opportunities with organisations including McDonald’s, Commonwealth Bank, Virgin, Qantas and Relay, translating the brand’s ambition into tangible partnership ideas.</p>
+      <p>Together, the work strengthened the connection between Thankyou’s products, public presence and social purpose.</p>
+      <!-- ROLE CREDIT: retain this attribution below the project copy. -->
+      <p class="thankyou-role-credit"><em>This work was undertaken in the role of Creative Director at Thankyou, alongside the team.</em></p>
+    </section>
+  </div>
+  <!-- VISUAL RESOURCES: six image slots, two columns on desktop / one on mobile.
+       For each figure, remove div.compact-photo-placeholder, then uncomment its
+       img line. Set src to your actual filename and write descriptive alt text.
+       Images use a 4:3 crop. Add style="object-fit:contain" for uncropped artwork.
+       Duplicate or remove complete figures to change the number of images.
+       For video, replace a placeholder with:
+       <video controls preload="none" poster="images/brand/thankyou-video-still.jpg" style="width:100%;border-radius:12px;">
+         <source src="videos/thankyou-project.mp4" type="video/mp4"/>
+       </video>
+       Keep media in separate files: do not embed base64 data in this HTML. -->
+  <div class="compact-case-gallery" aria-label="Thankyou project imagery">
+    <!-- VISUAL 01: Water  -->
+<figure class="case-asset">
+  <img
+    src="images/brand/thankyou_waterrange_refined.jpg"
+    class="brand-case-image"
+    alt="Thankyou Water Range Redefined"
+    loading="lazy"
+  />
+</figure>
+    <!-- VISUAL 02: Body  -->
+<figure class="case-asset">
+  <img
+    src="images/brand/thankyou-bodycare.jpg"
+    class="brand-case-image"
+    alt="Thankyou Bodycare"
+    loading="lazy"
+  />
+</figure>
+    <!-- VISUAL 03: Lifestyle Campaign  -->
+<figure class="case-asset">
+  <img
+    src="images/brand/thankyou-campaign-046.jpg"
+    class="brand-case-image"
+    alt="Thankyou Lifestyle Photoshoot"
+    loading="lazy"
+  />
+</figure>
+        <!-- VISUAL 04: Lifestyle Campaign  -->
+<figure class="case-asset">
+  <img
+    src="images/brand/thankyou-campaign-034.jpg"
+    class="brand-case-image"
+    alt="Thankyou Lifestyle Photoshoot"
+    loading="lazy"
+  />
+</figure>
+        <!-- VISUAL 05: Book Capter One  -->
+<figure class="case-asset">
+  <img
+    src="images/brand/thankyou-chapter-one.jpg"
+    class="brand-case-image"
+    alt="Thankyou Chapter One"
+    loading="lazy"
+  />
+</figure>
+        <!-- VISUAL 06: video  -->
+<figure class="case-asset">
+  <img
+    src="images/brand/thankyou_yes-campaign.png"
+    class="brand-case-image"
+    alt="Thankyou Video - YES Campaign"
+    loading="lazy"
+  />
+</figure>
+  </div>
+  <div class="case-contact"><a class="btn" href="contact.html">Discuss your project</a></div>
+</article>
+</template>
+
+<!-- PROJECT DETAILS: END THE CYCLE
+     Match case-end-the-cycle to data-case="end-the-cycle" on its card.
+     Edit the accent colour, title, headline, image path and copy below. -->
+<template id="case-end-the-cycle">
+<article class="compact-brand-case" style="--project-accent:#c93632;">
+  <!-- INTRO: project name, service categories and headline. -->
+  <header class="brand-detail-intro compact-case-heading">
+    <div class="compact-case-heading-copy">
+    <p class="mark">Creative direction · Campaigns · Photography · Video</p>
+    <h2 id="brand-detail-title">End the Cycle — CBM Australia</h2>
+    <p class="case-strapline">Real stories. Greater understanding.</p>
+      </div>
+    <!-- CLIENT LOGO: edit src below to match the exact filename in images/clients/. -->
+    <div class="compact-case-logos">
+      <img src="images/clients/end-the-cycle.jpg" alt="End the Cycle logo"/>
+    </div>
+  </header>
+  <!-- COPY: two columns on desktop, stacked on mobile. -->
+  <div class="compact-case-copy">
+    <section class="compact-case-summary">
+      <h3>Summary</h3>
+      <p>Creative leadership for an initiative raising awareness of the cycle of poverty and disability. Working alongside CBM Australia and its partners, we helped shape End the Cycle’s brand, messaging and public presence through photography, video, digital communication and campaign materials.</p>
+      <!-- CONTRIBUTIONS: add or remove list items as needed. -->
+      <h4>Our contribution</h4>
+      <ul class="compact-case-services">
+        <li>Creative direction across brand, collateral and video</li>
+        <li>Ongoing refinement of key messages, methodology and strategies</li>
+        <li>Campaign project management</li>
+        <li>Photography and visual storytelling</li>
+        <li>Video production and creative direction</li>
+        <li>Website creation and printed collateral</li>
+        <li>Photographic exhibitions</li>
+        <li>Development partner collaboration and co-hosted events</li>
+      </ul>
+    </section>
+    <section class="compact-case-outcome">
+      <h3>The Outcome</h3>
+      <p>Christoph led the creative direction of the brand, collateral and video, contributing to the ongoing development of End the Cycle alongside the wider team. This included refining key messages, methodology and strategies, and managing the delivery of the campaign.</p>
+      <p>Central to the work was an approach that supported people with disabilities to tell their own stories. Photography and video brought their experiences, perspectives and contributions into focus, helping audiences connect with the people behind the issues.</p>
+      <p>The work extended across video production, photography, website creation, printed collateral and photographic exhibitions, bringing a consistent visual presence to the campaign. Collaboration with development partners also supported co-hosted events, creating opportunities for people to engage with the stories and consider their role in disability-inclusive development.</p>
+      <p>Together, these contributions helped End the Cycle communicate its purpose and grow as a platform for awareness, participation and inclusion.</p>
+    </section>
+  </div>
+  <!-- PROJECT IMAGES: two slots below the copy. For each figure:
+       1. Remove the div with class="compact-photo-placeholder".
+       2. Uncomment the img line and set src to your real image filename.
+       3. Replace alt with a useful description. Keep the surrounding figure.
+       Images fill a 4:3 area; use object-position to adjust the crop. -->
+  <div class="compact-case-gallery" aria-label="Project images">
+    <figure>
+      <!-- IMAGE 1: collateral -->
+      <img src="images/brand/endthecycle-video.jpg" alt="End the Cycle video production" loading="lazy"/>
+    </figure>
+    <figure>
+      <!-- IMAGE 2: video. -->
+      <img src="images/brand/endthecycle-collateral.jpg" alt="Print collateral and web design" loading="lazy"/>
+    </figure>
+  </div>
+  <div class="case-contact"><a class="btn" href="contact.html">Discuss your project</a></div>
+</article>
+</template>
+
+<!-- PROJECT DETAILS: DEEPEN
+     Match case-deepen to data-case="deepen" on the overview card.
+     Header logo: images/clients/deepen.jpg. Edit the image slots below. -->
+<template id="case-deepen">
+<article class="compact-brand-case" style="--project-accent:#0765db;">
+  <!-- INTRO: project name, service categories and headline. -->
+  <header class="brand-detail-intro compact-case-heading">
+    <div class="compact-case-heading-copy">
+    <p class="mark">Brand development · Creative assets · Photography · Video</p>
+    <h2 id="brand-detail-title">Deepen</h2>
+    <p class="case-strapline">A brand built around deeper engagement.</p>
+      </div>
+    <!-- CLIENT LOGO: edit src below to match the exact filename in images/clients/. -->
+    <div class="compact-case-logos">
+      <img src="images/clients/deepen.png" alt="Deepen App Logo"/>
+    </div>
+  </header>
+  <!-- COPY: two columns on desktop, stacked on mobile. -->
+  <div class="compact-case-copy">
+    <section class="compact-case-summary">
+      <h3>Summary</h3>
+      <p>Brand development and creative production for a digital app helping people connect more deeply with the ideas they encounter. From messages, sermons, and seminars to lectures and conferences, Deepen encourages audiences to engage, reflect and carry their learning beyond the live session.</p>
+      <!-- CONTRIBUTIONS: add or remove list items as needed. -->
+      <h4>Our contribution</h4>
+      <ul class="compact-case-services">
+        <li>Brand development and visual identity</li>
+        <li>Logo design</li>
+        <li>Brand narrative, values, character and persona</li>
+        <li>Copywriting and brand messaging</li>
+        <li>Creative assets for print, web and social media</li>
+        <li>Photography</li>
+        <li>Video production</li>
+      </ul>
+    </section>
+    <section class="compact-case-outcome">
+      <h3>The Outcome</h3>
+      <p>The brand centred on a simple idea: meaningful engagement goes beneath the surface. We translated that purpose into a distinctive identity, supported by a clear narrative, values, brand character and persona.</p>
+      <p>The logo and visual language gave the idea of “going deeper” a recognisable expression, while copywriting connected the app’s practical features with its broader purpose: helping people follow along, capture what resonates and return to it over time.</p>
+      <p>These foundations extended into creative assets across print, web and social media. Photography and video supported the storytelling, bringing a consistent voice and visual presence to the ways Deepen introduces itself and communicates with its audiences.</p>
+      <p>Together, the work gave a digital product a clear, approachable brand, connecting its technology with the human value of learning, reflection and discovery. <a href="http://www.deepenapp.com" target="_blank">www.deepenapp.com</a></p></p>
+
+    </section>
+  </div>
+  <!-- PROJECT IMAGES: two slots below the copy. For each figure:
+       1. Remove the div with class="compact-photo-placeholder".
+       2. Uncomment the img line and set src to your real image filename.
+       3. Replace alt with a useful description. Keep the surrounding figure.
+       Images fill a 4:3 area; use object-position to adjust the crop. -->
+  <!-- <div class="compact-case-gallery" aria-label="Deepen project images">
+    <figure>
+      <!-- IMAGE 1: replace this placeholder with the image below. -->
+	<!-- 
+      <div class="compact-photo-placeholder"><span>Project image 1</span><small>Add photography or project artwork</small></div>
+      <!-- <img src="images/brand/deepen-1.jpg" alt="Describe this project image" loading="lazy"/> -->
+    <!-- </figure> -->
+   <!--
+	<figure>
+      <!-- IMAGE 2: replace this placeholder with the image below. -->
+     <!-- <div class="compact-photo-placeholder"><span>Project image 2</span><small>Add photography or project artwork</small></div>
+      <!-- <img src="images/brand/deepen-2.jpg" alt="Describe this project image" loading="lazy"/> -->
+   <!-- </figure>
+  </div> -->
+  <div class="case-contact"><a class="btn" href="contact.html">Discuss your project</a></div>
+</article>
+</template>
+
+<!-- ================================================================
+     REUSABLE SHORT PROJECT: STAGEMINDED
+     Copy this complete template for another project. Match case-PROJECT
+     to data-case="PROJECT" on its card. Edit the accent, title, strapline,
+     summary, outcome, scope and image path. Keep brand-detail-title;
+     only one project template is displayed at a time.
+     ================================================================ -->
+<template id="case-stageminded">
+<article class="compact-brand-case" style="--project-accent:#80b8be;">
+  <!-- INTRO: edit project name, service categories and headline. -->
+  <header class="brand-detail-intro compact-case-heading">
+    <div class="compact-case-heading-copy">
+    <p class="mark">Brand narrative · Visual identity · Course production</p>
+    <h2 id="brand-detail-title">Stageminded</h2>
+    <p class="case-strapline">The mindset behind the performance.</p>
+      </div>
+    <!-- CLIENT LOGO: edit src below to match the exact filename in images/clients/. -->
+    <div class="compact-case-logos">
+      <img src="images/clients/stageminded.jpg" alt="StageMinded logo"/>
+    </div>
+  </header>
+  <!-- COPY: Summary and contribution on the left, Outcome on the right.
+       The shared compact-case styles stack these columns on mobile. -->
+  <div class="compact-case-copy">
+    <section class="compact-case-summary">
+      <h3>Summary</h3>
+      <p>Establishing a brand that connects performance psychology with the demands of professional dance. Stageminded supports dancers working in companies around the world through counselling and practical mindset training, helping them build confidence, navigate pressure and thrive both on and beyond the stage.</p>
+      <!-- SCOPE: edit, add or remove list items to match each project. -->
+      <h4>Our contribution</h4>
+      <ul class="compact-case-services">
+        <li>Brand narrative and messaging</li>
+        <li>Logo development and visual identity</li>
+        <li>Online course video production: 48+ videos</li>
+        <li>Photography</li>
+        <li>Branded collateral, posters and banners</li>
+        <li>Client learning materials and conference resources</li>
+      </ul>
+    </section>
+    <section class="compact-case-outcome">
+      <h3>The Outcome</h3>
+      <p>We developed the brand narrative and visual identity around a central idea: what audiences see on stage is supported by foundations they cannot see.</p>
+      <p>The logo brings this relationship to life. Coloured stage lights illuminate “Stage” above, while “Minded” sits beneath—the hidden foundation of focus, confidence and resilience that supports performance at an elite level.</p>
+      <p>We extended the identity across branded collateral, posters, banners, client course materials and conference resources. Production of more than 48 videos for online training courses brought Stageminded’s expertise into an accessible learning format, supporting performers wherever their careers take them.</p>
+      <p>Together, the identity, narrative and learning materials gave Stageminded a consistent presence—from the first introduction to the ongoing work behind each performance. <a href="http://www.stageminded.com" target="_blank">www.stageminded.com</a></p>
+    </section>
+  </div>
+  <!-- PROJECT IMAGES: two slots below the copy. For each figure:
+       1. Remove the div with class="compact-photo-placeholder".
+       2. Uncomment the img line and set src to your real image filename.
+       3. Replace alt with a useful description. Keep the surrounding figure.
+       Images fill a 4:3 area; use object-position to adjust the crop. -->
+  <!-- <div class="compact-case-gallery" aria-label="Project images">
+    <figure>
+      <!-- IMAGE 1: replace this placeholder with the image below. -->
+     <!--  <img src="images/brand/stageminded-video.png" alt="Describe this project image" loading="lazy"/>
+    </figure>
+    <figure>
+      <!-- IMAGE 2: replace this placeholder with the image below. -->
+     <!--  <div class="compact-photo-placeholder"><span>Project image 2</span><small>Add photography or project artwork</small></div>
+      <!-- <img src="images/brand/stageminded-2.jpg" alt="Describe this project image" loading="lazy"/> -->
+    <!-- </figure>
+  </div>-->
+  <div class="case-contact"><a class="btn" href="contact.html">Discuss your project</a></div>
+</article>
+</template>
+
+<!-- ================================================================
+     REUSABLE SHORT PROJECT: TRISH MARKS
+     1. Copy this complete template for another project.
+     2. Change id="case-trish-marks" to id="case-YOUR-PROJECT".
+     3. On its grid card, use data-case="YOUR-PROJECT" on the button.
+     4. Edit the title, summary, outcome, contribution list and image paths.
+     5. Keep id="brand-detail-title": only one template is displayed at a time.
+     6. Change --project-accent to the project's highlight colour.
+     ================================================================ -->
+<template id="case-trish-marks">
+<article class="compact-brand-case" style="--project-accent:#cc9933;">
+  <!-- INTRO: project name and service categories. -->
+  <header class="brand-detail-intro compact-case-heading">
+    <div class="compact-case-heading-copy">
+    <p class="mark">Brand strategy · Visual identity · Photography</p>
+    <h2 id="brand-detail-title">Trish Marks Coaching</h2>
+      </div>
+    <!-- CLIENT LOGO: edit src below to match the exact filename in images/clients/. -->
+    <div class="compact-case-logos">
+      <img src="images/clients/trish-marks.png" alt="Trish Marks, Coaching for Life and Business"/>
+    </div>
+  </header>
+
+  <!-- COPY: left column is the summary; right column is the outcome.
+       Both columns stack automatically on smaller screens. -->
+  <div class="compact-case-copy">
+    <section class="compact-case-summary">
+      <h3>Summary</h3>
+      <p>Repositioning Marks Consultancy as a personal coaching brand for life and business, resulting in a clearer positioning and a more personal identity for a coaching practice focused on lasting change in life and business.</p>
+      <!-- CONTRIBUTION: add or remove list items for each project's scope. -->
+      <h4>Our contribution</h4>
+      <ul class="compact-case-services">
+        <li>Brand positioning &amp; narrative</li>
+        <li>Values &amp; value proposition</li>
+        <li>Visual identity &amp; brand guidelines</li>
+        <li>Brand photography</li>
+      </ul>
+    </section>
+    <section class="compact-case-outcome">
+      <h3>The Outcome</h3>
+      <p>We helped Trish move from consultancy to a clearly defined coaching brand, clarifying the narrative, values and value proposition around her tailored, relationship-based approach.</p>
+      <p>A refreshed visual identity, warmer gold palette and refined typography balanced professional credibility with personal warmth.</p>
+      <p>New brand assets and guidelines, and a dedicated photoshoot brought these foundations together, creating a consistent visual presence that reflects Trish’s character, expertise and commitment to her clients.</p>
+    </section>
+  </div>
+
+  <!-- PHOTOGRAPHY: two reserved image slots; duplicate a figure for more.-->
+  <div class="compact-case-gallery" aria-label="Brand photography">
+    <figure>
+      <!-- IMAGE 1: photography -->
+      <img src="images/brand/trishmarks_DSF8235.jpg" alt="Trish Marks Brand Photography" loading="lazy"/>
+    </figure>
+    <figure>
+      <!-- IMAGE 1: photography -->
+      <img src="images/brand/trishmarks-styleguide.jpg" alt="Trish Marks Logo Development" loading="lazy"/>
+    </figure>
+  </div>
+  <!-- CONTACT: shared closing link; edit destination only if needed. -->
+  <div class="case-contact"><a class="btn" href="contact.html">Discuss your project</a></div>
+</article>
+</template>
+
+<!-- PROJECT DETAILS: IGA × DEAKIN UNIVERSITY
+     Match this template ID with data-case="deakin-iga" on the card above.
+     Edit the accent, image path, copy and contributions for this project. -->
+<template id="case-deakin-iga">
+<article class="compact-brand-case" style="--project-accent:#5d886c;">
+  <!-- INTRO: project name, service categories and headline. -->
+  <header class="brand-detail-intro compact-case-heading">
+    <div class="compact-case-heading-copy">
+    <p class="mark">Creative direction · Messaging · Photography · Design</p>
+    <h2 id="brand-detail-title">IGA × Deakin University</h2>
+    <p class="case-strapline">Making healthy choices part of the everyday shop.</p>
+      </div>
+    <!-- CLIENT LOGO: edit src below to match the exact filename in images/clients/. -->
+    <div class="compact-case-logos">
+<img src="images/clients/deakin-university.jpg" alt="Deakin University logo"/>
+    </div>
+  </header>
+  <!-- COPY: Summary and contributions on the left; Outcome on the right.
+       Shared styles stack the columns on mobile. -->
+  <div class="compact-case-copy">
+    <section class="compact-case-summary">
+      <h3>Summary</h3>
+      <p>Creative development for a supermarket research intervention encouraging healthier food choices. Working with Deakin University and participating Champions IGA supermarkets, we brought healthy eating messages into the shopping environment through vibrant food photography, clear messaging and coordinated in-store design.</p>
+      <!-- CONTRIBUTIONS: add or remove individual list items as needed. -->
+      <h4>Our contribution</h4>
+      <ul class="compact-case-services">
+        <li>Creative direction and concept development</li>
+        <li>Campaign messaging</li>
+        <li>Food photography</li>
+        <li>Graphic design and dietary information graphics</li>
+        <li>Advertisements, banners and posters</li>
+        <li>In-store and shopping trolley graphics</li>
+      </ul>
+    </section>
+    <section class="compact-case-outcome">
+      <h3>The Outcome</h3>
+      <p>We translated the research team’s objectives into an approachable visual campaign, placing reminders about healthy eating where everyday purchasing decisions happen.</p>
+      <p>Our work combined creative direction, message development, photography and design. Colourful food imagery and simple, positive language made fresh produce and balanced eating the focus, while visual food-group guides helped communicate dietary information at a glance.</p>
+      <p>The creative extended across advertisements, banners, posters and shopping trolley graphics, giving the intervention a consistent presence throughout the store.</p>
+      <p>This Deakin University project received the Konrad Jamrozik Award for Health Advocacy and the VicHealth Healthy Eating Award for best health promotion project in Victoria.</p>
+    </section>
+  </div>
+  <!-- PROJECT IMAGES: two slots below the copy. For each figure:
+       1. Remove the div with class="compact-photo-placeholder".
+       2. Uncomment the img line and set src to your real image filename.
+       3. Replace alt with a useful description. Keep the surrounding figure.
+       Images fill a 4:3 area; use object-position to adjust the crop. -->
+  <div class="compact-case-gallery" aria-label="Project images">
+    <figure>
+      <!-- IMAGE 1: replace this placeholder with the image below. -->
+      <img src="images/brand/deakin-iga-1.png" alt="Describe this project image" loading="lazy"/>
+    </figure>
+    <figure>
+      <!-- IMAGE 2: replace this placeholder with the image below. -->
+      <img src="images/brand/deakin-iga-2.png" alt="Describe this project image" loading="lazy"/>
+    </figure>
+  </div>
+  <div class="case-contact"><a class="btn" href="contact.html">Discuss your project</a></div>
+</article>
+</template>
+
+<!-- FOOTER: update business name, location and phone. Keep tel: href in international format.
+       Repeat shared footer changes across the other HTML pages. -->
+<footer class="site-foot wrap">
+<span>Commonground Communication · Melbourne</span>
+<a href="tel:+61390887586">(03) 9088 7586</a>
+</footer>
+<!-- Load shared interactions last. Keep this script link and the styles.css link in head. -->
+<script onerror="window.brandSharedScriptMissing=true" src="script.js"></script>
+<script>/* All brand interactions live here. The renamed dialog avoids double-binding
+   if an older shared script.js contains the original brand overlay controls. */
+(function(){
+  // PROJECT ROW: touch/trackpad scrolling, arrow buttons and keyboard support.
+  // Each arrow advances one card; new cards are picked up automatically.
+  const projectRow=document.getElementById('brand-selected-grid');
+  const rowPrev=document.getElementById('brand-scroll-prev');
+  const rowNext=document.getElementById('brand-scroll-next');
+  function updateRowNav(){
+    const max=projectRow.scrollWidth-projectRow.clientWidth;
+    rowPrev.disabled=projectRow.scrollLeft<=2;
+    rowNext.disabled=projectRow.scrollLeft>=max-2;
+  }
+  function moveRow(direction){
+    const card=projectRow.querySelector('.brand-small-project');
+    if(!card)return;
+    const distance=card.getBoundingClientRect().width+(parseFloat(getComputedStyle(projectRow).gap)||0);
+    projectRow.scrollBy({left:direction*distance,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
+  }
+  rowPrev.addEventListener('click',()=>moveRow(-1));
+  rowNext.addEventListener('click',()=>moveRow(1));
+  projectRow.addEventListener('scroll',updateRowNav,{passive:true});
+  projectRow.addEventListener('keydown',event=>{
+    if(event.target!==projectRow)return;
+    if(event.key==='ArrowRight'||event.key==='ArrowLeft'){
+      event.preventDefault();moveRow(event.key==='ArrowRight'?1:-1);
+    }
+  });
+  new ResizeObserver(updateRowNav).observe(projectRow);
+  new MutationObserver(updateRowNav).observe(projectRow,{childList:true});
+  updateRowNav();
+  const dialog=document.getElementById('brand-detail-dialog');
+  const content=document.getElementById('brand-detail-content');
+  const buttons=Array.from(document.querySelectorAll('[data-case]'));
+  const close=document.getElementById('brand-detail-close');
+  let index=0,opener=null,previousOverflow='';
+  function imageFallbacks(root){
+    root.querySelectorAll('img[data-fallback]').forEach(img=>{
+      function fallback(){
+        if(!img.isConnected)return;
+        const box=document.createElement('div');box.className='brand-image-fallback';
+        box.textContent=img.dataset.fallback;img.replaceWith(box);
+      }
+      img.addEventListener('error',fallback,{once:true});
+      if(img.complete&&!img.naturalWidth)fallback();
+    });
+  }
+  function renderCase(next){
+    index=(next+buttons.length)%buttons.length;
+    const template=document.getElementById('case-'+buttons[index].dataset.case);
+    content.replaceChildren(template.content.cloneNode(true));
+    document.getElementById('brand-detail-count').textContent=(index+1)+' / '+buttons.length;
+    imageFallbacks(content);dialog.scrollTop=0;
+  }
+  buttons.forEach((button,i)=>button.addEventListener('click',()=>{
+    opener=button;renderCase(i);previousOverflow=document.body.style.overflow;
+    document.body.style.overflow='hidden';dialog.showModal();close.focus();
+  }));
+  close.addEventListener('click',()=>dialog.close());
+  dialog.addEventListener('close',()=>{document.body.style.overflow=previousOverflow;if(opener)opener.focus();});
+  document.getElementById('brand-detail-prev').addEventListener('click',()=>renderCase(index-1));
+  document.getElementById('brand-detail-next').addEventListener('click',()=>renderCase(index+1));
+  imageFallbacks(document);
+  const logo=document.querySelector('.logo img');
+  function fallbackLogo(){if(!logo.isConnected)return;const name=document.createElement('span');name.className='brand-preview-wordmark';name.textContent='COMMONGROUND';logo.replaceWith(name);}
+  logo.addEventListener('error',fallbackLogo,{once:true});if(logo.complete&&!logo.naturalWidth)fallbackLogo();
+  // Used only when script.js is unavailable in the standalone preview.
+  if(window.brandSharedScriptMissing){
+    const menu=document.querySelector('.menu-btn'),nav=document.querySelector('.nav');
+    menu.setAttribute('aria-expanded','false');
+    menu.addEventListener('click',()=>{const open=nav.classList.toggle('is-open');menu.setAttribute('aria-expanded',String(open));});
+  }
+})();
+</script></body>
+</html>
