@@ -401,14 +401,25 @@
   status.textContent = titles[key] + ' · ' + loaded.length + ' photograph' + (loaded.length === 1 ? '' : 's') +
     (complete < list.length ? ' · Loading…' : failures ? ' · ' + failures + ' unavailable' : '');
 
-  // Sort and rebuild the grid with whatever has loaded so far
   loaded.sort(function(a, b) { return a.order - b.order; });
   grid.replaceChildren();
-  loaded.forEach(function(item) { grid.appendChild(item.button); });
+
+  loaded.forEach(function(item) {
+    var btn = item.button;
+    btn.classList.add('photo-reveal-ready');
+    btn.style.opacity = '0';
+    grid.appendChild(btn);
+    // Force a reflow so the transition runs
+    btn.offsetHeight;
+    requestAnimationFrame(function() {
+      btn.classList.add('is-revealed');
+      btn.style.opacity = '';
+    });
+  });
+
   layoutGallery();
 
   if (complete === list.length) {
-    revealGallery();
     grid.setAttribute('aria-busy', 'false');
   }
 }
