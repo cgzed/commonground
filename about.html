@@ -10,6 +10,28 @@
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;700;800&family=Lato:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 
+  <!-- ABOUT TEAM LAYOUT: lead profile spans both columns; collaborators form a 2x2 grid. -->
+  <style>
+    .team--about {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .team--about .member--lead {
+      grid-column: 1 / -1;
+    }
+
+    @media (max-width: 760px) {
+      .team--about {
+        grid-template-columns: 1fr;
+      }
+
+      .team--about .member--lead {
+        grid-column: auto;
+      }
+    }
+  </style>
+
 <!-- SEO / SOCIAL METADATA: unique to this page. Deployment assumes www.commonground.cc
      and the supplied .html navigation. Update canonical, og:url and JSON-LD URLs together
      if hosting uses extensionless routes. Social image uses an existing site asset;
@@ -109,6 +131,16 @@
   ]
 }
 </script>
+	
+	<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-12V5LHD8Q3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-12V5LHD8Q3');
+</script>
+	
 </head>
 <body>
   <!-- EDITING GUIDE
@@ -159,16 +191,19 @@
   <section class="section" style="padding-top:10px">
     <div class="wrap">
       <p class="mark">/ 02 · People</p>
-      <div class="team">
-        <article class="member">
+      <div class="team team--about">
+        <article class="member member--lead">
           <!-- IMAGE: edit src for the file path and alt for its description; preserve layout classes. -->
           <img src="images/about/CZ.png">
           <div>
             <h3>Christoph</h3>
             <p class="role">Managing &amp; Creative Director</p>
-            <p>More than fifteen years in brand strategy, storytelling and production. As lead consultant and creative director, Christoph oversees the strategic and creative direction of Commonground's projects, guiding clients from first conversation through delivery across brand, video, photography and campaigns.</p>
+            <p>With more than fifteen years of experience in brand strategy, storytelling and production, Christoph leads the strategic and creative direction of Commonground. As Managing and Creative Director, he guides clients from the first conversation through to delivery, bringing together strategic thinking and creative vision across brand, video, photography and campaigns.</p>
+            <p>&nbsp;</p>
+<p>Having partnered with businesses, healthcare organisations, educational institutions and not-for-profits, Christoph helps organisations clarify their purpose, strengthen their identity and communicate with greater impact. At the heart of his approach is a belief in the power of human connection — finding the common ground that deepens understanding, builds lasting trust and inspires meaningful action.</p>
           </div>
         </article>
+
         <article class="member">
           <!-- IMAGE: edit src for the file path and alt for its description; preserve layout classes. -->
           <img src="images/about/AD.png">
@@ -178,6 +213,7 @@
             <p>Collaborator across direction and production — keeping the work moving from brief to delivery.</p>
           </div>
         </article>
+
         <article class="member">
           <!-- IMAGE: edit src for the file path and alt for its description; preserve layout classes. -->
           <img src="images//about/EW.png">
@@ -187,15 +223,7 @@
             <p>Collaborator on brand&nbsp; and strategy —  foundations and&nbsp; narrative.</p>
           </div>
         </article>
-        <article class="member">
-          <!-- IMAGE: edit src for the file path and alt for its description; preserve layout classes. -->
-          <img src="images/about/NM.png">
-          <div>
-            <h3>Nick</h3>
-            <p class="role">Animation &amp; Audio</p>
-            <p>Collaborator on video, animation and motion — graphics, effects and audio that carry the same story as the live action.</p>
-          </div>
-        </article>
+
         <article class="member">
           <!-- IMAGE: edit src for the file path and alt for its description; preserve layout classes. -->
           <img src="images/about/DK.png">
@@ -203,6 +231,16 @@
             <h3>Dan</h3>
             <p class="role">Videography &amp; Lighting</p>
             <p>Collaborator on video production&nbsp; &nbsp;— camera, movement, light — a mix treated as one piece of communication.</p>
+          </div>
+        </article>
+
+        <article class="member">
+          <!-- IMAGE: edit src for the file path and alt for its description; preserve layout classes. -->
+          <img src="images/about/NM.png">
+          <div>
+            <h3>Nick</h3>
+            <p class="role">Animation &amp; Audio</p>
+            <p>Collaborator on video, animation and motion — graphics, effects and audio that carry the same story as the live action.</p>
           </div>
         </article>
       </div>
