@@ -157,40 +157,49 @@
       <form action="https://api.web3forms.com/submit" method="POST">
   <input type="hidden" name="access_key" value="cea53e2e-c8f6-44de-bfe4-4271758b7c7e">
   <input type="hidden" name="redirect" value="https://commonground.cc/thanks.html">
-        <label for="name">Name</label>
-        <input id="name" name="name" required>
-        <label for="org">Organisation</label>
-        <input id="org" name="organisation">
-        <div class="form-row">
-          <div>
-            <label for="email">Email</label>
-            <input id="email" name="email" type="email" required>
-          </div>
-          <div>
-            <label for="phone">Phone</label>
-            <input id="phone" name="phone" type="tel">
-          </div>
-        </div>
-        <label for="title">Project working title</label>
-        <input id="title" name="project_title">
-        <label for="message">Project description</label>
-        <textarea id="message" name="description" required></textarea>
-        <div class="form-row">
-          <div>
-            <label for="runtime">Runtime</label>
-            <input id="runtime" name="runtime" placeholder="e.g. 3 minutes, or a stills series">
-          </div>
-          <div>
-            <label for="deadline">Deadline</label>
-            <input id="deadline" name="deadline" type="date">
-          </div>
-        </div>
-        <label for="budget">Indicative budget</label>
-        <input id="budget" name="budget" placeholder="$">
-        <label for="else">Anything else — or references to share?</label>
-        <textarea id="else" name="notes"></textarea>
-        <button class="btn" type="submit">Send</button>
-      </form>
+
+  <label for="name">Name *</label>
+  <input id="name" name="name" required>
+
+  <label for="org">Organisation/business *</label>
+  <input id="org" name="organisation" required>
+
+  <div class="form-row">
+    <div>
+      <label for="email">Email *</label>
+      <input id="email" name="email" type="email" required>
+    </div>
+    <div>
+      <label for="phone">Phone *</label>
+      <input id="phone" name="phone" type="tel" required>
+    </div>
+  </div>
+
+  <label for="title">Project working title</label>
+  <input id="title" name="project_title">
+
+  <label for="message">Project description *</label>
+  <textarea id="message" name="description" required></textarea>
+
+  <div class="form-row">
+    <div>
+      <label for="runtime">Runtime</label>
+      <input id="runtime" name="runtime" placeholder="e.g. 3 minutes, or a stills series">
+    </div>
+    <div>
+      <label for="deadline">Deadline</label>
+      <input id="deadline" name="deadline" type="date">
+    </div>
+  </div>
+
+  <label for="budget">Indicative budget</label>
+  <input id="budget" name="budget" placeholder="$">
+
+  <label for="else">Anything else — or references to share?</label>
+  <textarea id="else" name="notes"></textarea>
+
+  <button class="btn" type="submit">Send</button>
+</form>
     </div>
   </section>
 
