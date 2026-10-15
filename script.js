@@ -384,7 +384,7 @@
         img.onerror = function () { if (token === generation) { failures++; finish(); } };
         img.src = src;
       });
-      function finish() {
+      /*function finish() {
         complete++;
         status.textContent = titles[key] + ' · ' + loaded.length + ' photograph' + (loaded.length === 1 ? '' : 's') +
           (complete < list.length ? ' · Loading…' : failures ? ' · ' + failures + ' unavailable' : '');
@@ -394,7 +394,24 @@
           layoutGallery(); revealGallery();
           grid.setAttribute('aria-busy','false');
         }
-      }
+      }*/
+		
+		function finish() {
+  complete++;
+  status.textContent = titles[key] + ' · ' + loaded.length + ' photograph' + (loaded.length === 1 ? '' : 's') +
+    (complete < list.length ? ' · Loading…' : failures ? ' · ' + failures + ' unavailable' : '');
+
+  // Sort and rebuild the grid with whatever has loaded so far
+  loaded.sort(function(a, b) { return a.order - b.order; });
+  grid.replaceChildren();
+  loaded.forEach(function(item) { grid.appendChild(item.button); });
+  layoutGallery();
+
+  if (complete === list.length) {
+    revealGallery();
+    grid.setAttribute('aria-busy', 'false');
+  }
+}
     }
     galleryButtons.forEach(function (button) {
       button.addEventListener('click', function () { loadGallery(button.getAttribute('data-gallery'), true); });
